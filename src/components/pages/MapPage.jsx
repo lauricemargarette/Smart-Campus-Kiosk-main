@@ -6,6 +6,7 @@ import {
   sx, sy, findLocationByName, fetchNavigation,
 } from '../../data/campusData'
 import icctLogo from '../../assets/icct-logo.png'
+import { useTheme } from '../../theme'
 
 // ----Line icons ----
 const Icon = {
@@ -54,6 +55,56 @@ const Icon = {
       <path d="M4 22V4a1 1 0 0 1 1-1h13.5a.5.5 0 0 1 .4.8L15 9l3.9 5.2a.5.5 0 0 1-.4.8H5"/>
     </svg>
   ),
+  Sun: (p) => (
+    <svg width={p.size||20} height={p.size||20} viewBox="0 0 24 24" fill="none" stroke={p.color||'currentColor'} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="12" cy="12" r="4.5"/>
+      <line x1="12" y1="2" x2="12" y2="4.5"/><line x1="12" y1="19.5" x2="12" y2="22"/>
+      <line x1="2" y1="12" x2="4.5" y2="12"/><line x1="19.5" y1="12" x2="22" y2="12"/>
+      <line x1="4.6" y1="4.6" x2="6.3" y2="6.3"/><line x1="17.7" y1="17.7" x2="19.4" y2="19.4"/>
+      <line x1="4.6" y1="19.4" x2="6.3" y2="17.7"/><line x1="17.7" y1="6.3" x2="19.4" y2="4.6"/>
+    </svg>
+  ),
+  Moon: (p) => (
+    <svg width={p.size||20} height={p.size||20} viewBox="0 0 24 24" fill="none" stroke={p.color||'currentColor'} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M21 12.8A9 9 0 1 1 11.2 3a7.2 7.2 0 0 0 9.8 9.8z"/>
+    </svg>
+  ),
+}
+
+// ---- Theme Toggle ----
+function ThemeToggle({ theme, onToggle }) {
+  const isDark = theme.mode === 'dark'
+  return (
+    <button
+      onClick={onToggle}
+      aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
+      title={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
+      style={{
+        position: 'relative',
+        width: '56px', height: '30px',
+        borderRadius: '18px',
+        background: theme.toggleTrackBg,
+        border: `1px solid ${theme.toggleTrackBorder}`,
+        backdropFilter: 'blur(8px)',
+        cursor: 'pointer',
+        padding: 0,
+        flexShrink: 0,
+        transition: 'background 0.25s, border-color 0.25s',
+      }}
+    >
+      <span style={{
+        position: 'absolute', top: '3px', left: isDark ? '28px' : '3px',
+        width: '22px', height: '22px', borderRadius: '50%',
+        background: theme.toggleKnobBg,
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        color: theme.toggleIconColor,
+        transition: 'left 0.25s cubic-bezier(0.4,0,0.2,1)',
+        boxShadow: '0 2px 6px rgba(0,0,0,0.25)',
+      }}>
+        {isDark ? <Icon.Moon size={13}/> : <Icon.Sun size={13}/>}
+      </span>
+    </button>
+  )
 }
 
 // ─────────────────────────────────────────────────────────────
@@ -89,9 +140,10 @@ function QRCode({ value, size = 80 }) {
 // ─────────────────────────────────────────────────────────────
 //  ROOM PHOTO PLACEHOLDER
 // ─────────────────────────────────────────────────────────────
-function RoomPhoto({ location }) {
+function RoomPhoto({ location, theme }) {
   const [imgError, setImgError] = useState(false)
   const hasImage = location?.image_url && !imgError
+  const ps = getPhotoStyles(theme)
 
   return (
     <div style={ps.wrap}>
@@ -104,7 +156,7 @@ function RoomPhoto({ location }) {
         />
       ) : (
         <div style={ps.placeholder}>
-          <div style={{ color: '#7fa8bd' }}><Icon.Image size={28}/></div>
+          <div style={{ color: theme.textMuted }}><Icon.Image size={28}/></div>
           <p style={ps.placeholderName}>{location?.name}</p>
           <p style={ps.placeholderSub}>
             {location?.type === 'library'    ? 'Reference books & reading area'   :
@@ -121,13 +173,13 @@ function RoomPhoto({ location }) {
   )
 }
 
-const ps = {
+const getPhotoStyles = (theme) => ({
   wrap: {
     width: '100%',
     borderRadius: 12,
     overflow: 'hidden',
-    border: '1px solid rgba(255,255,255,0.08)',
-    background: 'rgba(7,18,32,0.5)',
+    border: `1px solid ${theme.glassBorder}`,
+    background: theme.glassBg,
     backdropFilter: 'blur(8px)',
     WebkitBackdropFilter: 'blur(8px)',
   },
@@ -144,18 +196,19 @@ const ps = {
     alignItems: 'center',
     justifyContent: 'center',
     gap: 4,
-    background: 'linear-gradient(135deg, rgba(7,18,32,0.4) 0%, rgba(10,25,42,0.6) 100%)',
+    background: theme.mode === 'dark'
+      ? 'linear-gradient(135deg, rgba(7,18,32,0.4) 0%, rgba(10,25,42,0.6) 100%)'
+      : 'linear-gradient(135deg, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0.55) 100%)',
     padding: '12px',
   },
-  placeholderName:  { fontSize: 12, fontWeight: 600, color: '#9B9BF5', textAlign: 'center', marginTop: 4 },
-  placeholderSub:   { fontSize: 10, color: '#7fa8bd', textAlign: 'center', lineHeight: 1.4 },
-  placeholderNote:  { fontSize: 9,  color: '#5a7a8a', marginTop: 4 },
-}
+  placeholderName:  { fontSize: 12, fontWeight: 600, color: theme.accentText, textAlign: 'center', marginTop: 4 },
+  placeholderSub:   { fontSize: 10, color: theme.textMuted, textAlign: 'center', lineHeight: 1.4 },
+  placeholderNote:  { fontSize: 9,  color: theme.textMuted, marginTop: 4 },
+})
 
 // ─────────────────────────────────────────────────────────────
-//  CAMPUS SVG MAP — renders building outlines, room blocks, labels, edges, and animated path dot
+//  CAMPUS SVG MAP
 // ─────────────────────────────────────────────────────────────
-
 const BLDG_LABELS = {
   'Building 1': { short: 'B1', color: '#0e417b' },
   'Building 2': { short: 'B2', color: '#a09363' },
@@ -165,7 +218,7 @@ const BLDG_LABELS = {
 
 function roomLabel(label, bw, bh) {
   if (!label || typeof label !== 'string' || label.trim() === '') return { lines: [], fontSize: 6, lineH: 8 }
-  const fontSize = Math.max(5, Math.min(7.5, bw / 12))
+  const fontSize = Math.max(6, Math.min(8, bw / 12))
   const charsPerLine = Math.max(5, Math.floor(bw / (fontSize * 0.6)))
   const maxLines = Math.max(1, Math.floor(bh / (fontSize + 3)))
   const words = label.split(' ')
@@ -181,7 +234,7 @@ function roomLabel(label, bw, bh) {
   return { lines: visible, fontSize, lineH: fontSize + 2.5 }
 }
 
-function CampusMap({ floor, destId, path, currentStep = 0 }) {
+function CampusMap({ floor, destId, path, currentStep = 0, theme }) {
   const blocks    = FLOOR_BLOCKS[floor] || FLOOR_BLOCKS[1]
   const floorLocs = LOCATIONS.filter(l => l.floor === floor)
 
@@ -211,7 +264,7 @@ function CampusMap({ floor, destId, path, currentStep = 0 }) {
     <svg
       viewBox={`0 0 ${SCALE.W} ${SCALE.H}`}
       width="100%" height="100%"
-      style={{ background: '#070d1a', borderRadius: 14, border: '1px solid #1a2744', display: 'block', boxShadow: '0 8px 32px rgba(0,0,0,0.3)' }}
+      style={{ background: theme.mapCanvasBg, borderRadius: 14, border: `1px solid ${theme.mapCanvasBorder}`, display: 'block', boxShadow: theme.mapCanvasShadow }}
     >
       {/* ── PASS 1: Building outlines ── */}
       {blocks.filter(b => b.type === 'building').map((b, i) => {
@@ -222,8 +275,8 @@ function CampusMap({ floor, destId, path, currentStep = 0 }) {
         return (
           <rect key={`bldg-${i}`}
             x={bx} y={by} width={bw} height={bh} rx="4"
-            fill="#0d1b2e"
-            stroke={info?.color || '#1a3a5c'}
+            fill={theme.mapBuildingFill}
+            stroke={info?.color || theme.mapBuildingStroke}
             strokeWidth="2"
           />
         )
@@ -235,6 +288,11 @@ function CampusMap({ floor, destId, path, currentStep = 0 }) {
         const bw = sx(b.x + b.w) - sx(b.x)
         const bh = sy(b.y + b.h) - sy(b.y)
         const meta = TYPE_META[b.type] || TYPE_META.facility
+        const blockFill =
+          theme.roomFillByType?.[b.type] ||
+          theme.roomFillByType?.facility ||
+          meta.fill ||
+          theme.mapBuildingFill
         const cx = bx + bw / 2
         const cy = by + bh / 2
         const result = roomLabel(b.label, bw, bh)
@@ -245,14 +303,14 @@ function CampusMap({ floor, destId, path, currentStep = 0 }) {
         return (
           <g key={`room-${i}`}>
             <rect x={bx} y={by} width={bw} height={bh} rx="3"
-              fill={meta.fill || '#0d1b2e'}
-              stroke="#1a3a5c" strokeWidth="1" opacity="0.9"
+              fill={blockFill}
+              stroke={theme.mapRoomStroke} strokeWidth="1" opacity="0.9"
             />
             {bw > 20 && bh > 10 && lines.map((line, li) => (
               <text key={li}
                 x={cx} y={startY + li * lineH}
                 textAnchor="middle" dominantBaseline="middle"
-                style={{ fontSize, fill: '#3a6a8e', fontFamily: 'monospace', pointerEvents: 'none', userSelect: 'none' }}
+                style={{ fontSize, fill: theme.mapRoomLabel, fontFamily: 'monospace', pointerEvents: 'none', userSelect: 'none' }}
               >
                 {line}
               </text>
@@ -292,7 +350,7 @@ function CampusMap({ floor, destId, path, currentStep = 0 }) {
 
       {/* ── Floor label ── */}
       <text x={sx(11)} y={sy(22.5)} textAnchor="middle"
-        style={{ fontSize: 11, fill: '#1e3a5f', fontFamily: 'monospace', fontWeight: 700 }}>
+        style={{ fontSize: 11, fill: theme.mapFloorLabel, fontFamily: 'monospace', fontWeight: 700 }}>
         {FLOOR_LABELS[floor] || `Floor ${floor}`}
       </text>
 
@@ -306,7 +364,7 @@ function CampusMap({ floor, destId, path, currentStep = 0 }) {
         return (
           <path key={i}
             d={`M${sx(la.x)},${sy(la.y)} L${sx(lb.x)},${sy(lb.y)}`}
-            stroke={isCurrentLeg ? '#38bdf8' : onPath ? '#2c6b94' : '#1a3a5c'}
+            stroke={isCurrentLeg ? theme.mapEdgeCurrent : onPath ? theme.mapEdgeOnPath : theme.mapEdgeIdle}
             strokeWidth={isCurrentLeg ? 3.5 : onPath ? 1.8 : 1}
             strokeLinecap="round"
             strokeDasharray={onPath ? 'none' : '4,3'}
@@ -328,7 +386,7 @@ function CampusMap({ floor, destId, path, currentStep = 0 }) {
           return (
             <g>
               <path id="anim-leg" d={legD} fill="none" stroke="none"/>
-              <circle r="6" fill="#38bdf8">
+              <circle r="6" fill={theme.mapEdgeCurrent}>
                 <animateMotion dur="1.6s" repeatCount="indefinite">
                   <mpath href="#anim-leg"/>
                 </animateMotion>
@@ -338,7 +396,7 @@ function CampusMap({ floor, destId, path, currentStep = 0 }) {
         }
 
         return (
-          <circle cx={sx(curLoc.x)} cy={sy(curLoc.y)} r="6" fill="#38bdf8">
+          <circle cx={sx(curLoc.x)} cy={sy(curLoc.y)} r="6" fill={theme.mapEdgeCurrent}>
             <animate attributeName="r" values="5;8;5" dur="1.2s" repeatCount="indefinite"/>
           </circle>
         )
@@ -371,7 +429,7 @@ function CampusMap({ floor, destId, path, currentStep = 0 }) {
         const pillW = Math.max(18, label.length * 5.2 + 8)
         const pillH = 12
 
-        const pillFill   = isDest ? '#378add' : '#111e35'
+        const pillFill   = isDest ? theme.mapPillBgDest : theme.mapPillBg
         const pillStroke = isDest ? '#6eb6ff' : meta.color + '88'
         const textCol    = isDest ? '#ffffff'  : meta.color
 
@@ -423,14 +481,14 @@ function CampusMap({ floor, destId, path, currentStep = 0 }) {
             )}
             <circle
               cx={sx(loc.x)} cy={sy(loc.y)} r={r}
-              fill={isKiosk ? '#0c2240' : isDest ? '#0d2d4a' : '#0d1b2e'}
+              fill={isKiosk ? '#0c2240' : isDest ? '#0d2d4a' : theme.mapNodeFill}
               stroke={isKiosk ? '#0ea5e9' : isDest ? '#378add' : meta.color}
               strokeWidth={isKiosk || isDest ? 2.5 : 1.5}
             />
             {!isKiosk && !isDest && (
               <text x={sx(loc.x)} y={sy(loc.y)}
                 textAnchor="middle" dominantBaseline="middle"
-                style={{ fontSize: 6.5, fill: '#fff', fontFamily: 'monospace', fontWeight: 700, pointerEvents: 'none' }}>
+                style={{ fontSize: 6.5, fill: theme.mapNodeText, fontFamily: 'monospace', fontWeight: 700, pointerEvents: 'none' }}>
                 {loc.id}
               </text>
             )}
@@ -462,6 +520,8 @@ export default function MapPage() {
   const [currentStep,  setCurrentStep]  = useState(0)
   const prevDestIdRef = useRef(null)
   const prevStepRef   = useRef(0)
+
+  const { theme, toggleTheme } = useTheme()
 
   useEffect(() => {
     if (!document.getElementById('inter-font')) {
@@ -523,8 +583,8 @@ export default function MapPage() {
 
   const dest               = LOCATIONS.find(l => l.id === destId)
   const floorKeys          = Object.keys(FLOOR_BLOCKS).map(Number).sort((a, b) => a - b)
-  const displayPath = useMemo(() => (destId ? path : []), [destId, path])
-  const displayDirections = useMemo(() => (destId ? directions : []), [destId, directions])
+  const displayPath        = useMemo(() => (destId ? path : []), [destId, path])
+  const displayDirections  = useMemo(() => (destId ? directions : []), [destId, directions])
 
   const stepFloor = useMemo(() => {
     const nodeId = displayPath[currentStep]
@@ -543,53 +603,83 @@ export default function MapPage() {
     }
   }, [currentStep, stepFloor])
 
+  // Human-readable floor label for top bar pills
+  const floorPillLabel = (f) => {
+    const label = FLOOR_LABELS[f]
+    if (!label) return `Floor ${f}`
+    if (label === 'Ground Floor') return 'Ground'
+    // e.g. "Second Floor" → "Second", "Third Floor" → "Third"
+    return label.replace(' Floor', '')
+  }
+
+  const s = getStyles(theme)
+
   return (
     <div style={s.page}>
 
-      {/* Ambient glow for glass to refract */}
+      {/* Ambient glow */}
       <div style={s.ambientWrap}>
         <div style={s.ambient1}/>
         <div style={s.ambient2}/>
         <div style={s.ambient3}/>
       </div>
 
-      {/* ── Top bar — glass, real logo ── */}
+      {/* ── Top bar ── */}
       <div style={s.topBar}>
+        {/* Left: logo */}
         <div style={s.topBarLeft}>
           <img src={icctLogo} alt="ICCT Colleges" style={s.logoImg}/>
         </div>
 
-        <div style={s.floorRow}>
-          <span style={s.floorLabel}>Floor:</span>
-          {floorKeys.map(f => (
-            <button key={f}
-              style={{ ...s.floorBtn, ...(floor === f ? s.floorBtnActive : {}) }}
-              onClick={() => setFloor(f)}
-            >
-              {FLOOR_LABELS[f]?.replace(' Floor', '') || `F${f}`}
-            </button>
-          ))}
+        {/* Center: floor pills */}
+        <div style={s.floorPillsWrap}>
+          <span style={s.floorPillsLabel}>FLOOR:</span>
+          <div style={s.floorPills}>
+            {floorKeys.map(f => {
+              const isActive = floor === f
+              return (
+                <button
+                  key={f}
+                  onClick={() => setFloor(f)}
+                  title={FLOOR_LABELS[f] || `Floor ${f}`}
+                  style={{
+                    ...s.floorPill,
+                    ...(isActive ? s.floorPillActive : {}),
+                  }}
+                >
+                  {floorPillLabel(f)}
+                </button>
+              )
+            })}
+          </div>
         </div>
 
-        <div style={s.kioskBadge}>
-          <Icon.Pin size={13}/> Kiosk · GF · Building 4
+        {/* Right: kiosk badge + theme toggle */}
+        <div style={s.topBarRight}>
+          <div style={s.kioskBadge}>
+            <Icon.Pin size={13}/> Kiosk · GF · Building 4
+          </div>
+          <ThemeToggle theme={theme} onToggle={toggleTheme}/>
         </div>
       </div>
 
       {/* ── Body ── */}
       <div style={s.body}>
 
-        {/* ── Map — crisp, no glass ── */}
+        {/* ── Map ── */}
         <div style={s.mapWrap}>
           <CampusMap
             floor={floor}
             destId={destId}
             path={displayPath}
             currentStep={currentStep}
+            theme={theme}
           />
+
+
         </div>
 
-        {/* ── Side panel — glass ── */}
+        {/* ── Side panel ── */}
         <div style={s.panel}>
 
           {/* Destination */}
@@ -663,7 +753,7 @@ export default function MapPage() {
           {dest && (
             <div style={s.sec}>
               <p style={s.secLabel}><Icon.Image size={12}/> What it looks like</p>
-              <RoomPhoto location={dest}/>
+              <RoomPhoto location={dest} theme={theme}/>
             </div>
           )}
 
@@ -675,13 +765,13 @@ export default function MapPage() {
                 <QRCode
                   value={`http://192.168.8.143:5174/directions?to=${dest.id}&name=${encodeURIComponent(dest.name)}&floor=${dest.floor || 1}&building=${dest.building || ''}`}
                   size={140}
-                  />
+                />
                 <p style={s.muted}>Scan to save these directions on your phone.</p>
               </div>
             </div>
           )}
 
-          {/*Home button*/}
+          {/* Home button */}
           <div style={{ ...s.sec, borderBottom: 'none', marginTop: 'auto' }}>
             <button style={s.homeBtnBottom} onClick={() => navigate('/home')}>
               <Icon.Home size={18}/> Back to Home
@@ -690,19 +780,17 @@ export default function MapPage() {
 
           {/* Empty state */}
           {!dest && (
-            <>
-              <div style={{ ...s.sec, flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <div style={s.emptyState}>
-                  <span style={{ color: '#7fa8bd' }}><Icon.Map size={44}/></span>
-                  <p style={{ ...s.muted, textAlign: 'center', lineHeight: 1.7 }}>
-                    Search for a location on the Home page to get directions here.
-                  </p>
-                  <button style={s.goHomeBtn} onClick={() => navigate('/home')}>
-                    Go to Search
-                  </button>
-                </div>
+            <div style={{ ...s.sec, flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <div style={s.emptyState}>
+                <span style={{ color: theme.textMuted }}><Icon.Map size={44}/></span>
+                <p style={{ ...s.muted, textAlign: 'center', lineHeight: 1.7 }}>
+                  Search for a location on the Home page to get directions here.
+                </p>
+                <button style={s.goHomeBtn} onClick={() => navigate('/home')}>
+                  Go to Search
+                </button>
               </div>
-            </>
+            </div>
           )}
         </div>
       </div>
@@ -711,91 +799,130 @@ export default function MapPage() {
 }
 
 // ─────────────────────────────────────────────────────────────
-//  STYLES — glassmorphism on UI chrome, map stays crisp
+//  STYLES
 // ─────────────────────────────────────────────────────────────
-const s = {
+const getStyles = (theme) => ({
   page: {
-    background: 'linear-gradient(135deg, #040816 0%, #07182E 50%, #04111D 100%)',
-    height:'100vh', width:'100%', color:'white', display:'flex', flexDirection:'column',
+    background: theme.pageBg,
+    height:'100vh', width:'100%', color: theme.textPrimary, display:'flex', flexDirection:'column',
     overflow:'hidden', fontFamily:"'Inter',system-ui,sans-serif", position:'relative',
+    transition: 'background 0.3s, color 0.3s',
   },
 
   ambientWrap: { position:'absolute', inset:0, pointerEvents:'none', zIndex:0, overflow:'hidden' },
-  ambient1: { position:'absolute', width:'420px', height:'420px', borderRadius:'50%', background:'radial-gradient(circle, rgba(91,141,239,0.10) 0%, transparent 70%)', top:'-10%', right:'10%', filter:'blur(60px)' },
-  ambient2: { position:'absolute', width:'380px', height:'380px', borderRadius:'50%', background:'radial-gradient(circle, rgba(124,124,240,0.08) 0%, transparent 70%)', bottom:'-15%', left:'5%', filter:'blur(60px)' },
-  ambient3: { position:'absolute', width:'320px', height:'320px', borderRadius:'50%', background:'radial-gradient(circle, rgba(167,139,250,0.06) 0%, transparent 70%)', top:'40%', right:'30%', filter:'blur(65px)' },
+  ambient1: { position:'absolute', width:'420px', height:'420px', borderRadius:'50%', background:`radial-gradient(circle, ${theme.ambient1} 0%, transparent 70%)`, top:'-10%', right:'10%', filter:'blur(60px)' },
+  ambient2: { position:'absolute', width:'380px', height:'380px', borderRadius:'50%', background:`radial-gradient(circle, ${theme.ambient2} 0%, transparent 70%)`, bottom:'-15%', left:'5%', filter:'blur(60px)' },
+  ambient3: { position:'absolute', width:'320px', height:'320px', borderRadius:'50%', background:`radial-gradient(circle, ${theme.ambient3} 0%, transparent 70%)`, top:'40%', right:'30%', filter:'blur(65px)' },
 
+  // ── Top bar — now has three zones: left logo | center floor pills | right controls ──
   topBar: {
-    display:'flex', alignItems:'center', justifyContent:'space-between',
-    padding:'8px 20px',
-    background:'rgba(7,24,46,0.55)',
-    backdropFilter:'blur(24px) saturate(160%)',
-    WebkitBackdropFilter:'blur(24px) saturate(160%)',
-    borderBottom:'1px solid rgba(255,255,255,0.08)',
-    flexShrink:0, gap:12, position:'relative', zIndex:2,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: '8px 20px',
+    background: theme.headerBg,
+    backdropFilter: 'blur(24px) saturate(160%)',
+    WebkitBackdropFilter: 'blur(24px) saturate(160%)',
+    borderBottom: `1px solid ${theme.headerBorder}`,
+    flexShrink: 0,
+    gap: 12,
+    position: 'relative',
+    zIndex: 2,
+    transition: 'background 0.3s, border-color 0.3s',
   },
   topBarLeft: { display:'flex', alignItems:'center', gap:14, flexShrink:0 },
   logoImg: { height:'40px', width:'auto', display:'block', filter:'drop-shadow(0 2px 6px rgba(0,0,0,0.4))' },
-  homeBtn: {
-    background:'rgba(255,255,255,0.06)', backdropFilter:'blur(8px)',
-    border:'1px solid rgba(124,124,240,0.3)', borderRadius:10,
-    color:'#9B9BF5', fontSize:14, padding:'8px 16px', cursor:'pointer',
-    fontFamily:'inherit', flexShrink:0,
-    display:'flex', alignItems:'center', gap:6,
-  },
-  floorRow:    { display:'flex', alignItems:'center', gap:6, flexWrap:'wrap' },
-  floorLabel:  { fontSize:12, color:'#7fa8bd', marginRight:4, flexShrink:0, fontFamily:'inherit' },
-  floorBtn: {
-    background:'rgba(255,255,255,0.05)', backdropFilter:'blur(8px)',
-    border:'1px solid rgba(255,255,255,0.1)', borderRadius:20,
-    color:'#7fa8bd', fontSize:12, padding:'6px 14px', cursor:'pointer',
-    fontFamily:'inherit', transition:'all .15s',
-  },
-  floorBtnActive: { background:'rgba(124,124,240,0.3)', border:'1px solid #7C7CF0', color:'#fff', boxShadow:'0 0 16px rgba(124,124,240,0.3)' },
+  topBarRight: { display:'flex', alignItems:'center', gap:12, flexShrink:0 },
   kioskBadge: {
-    fontSize:13, color:'#9B9BF5',
-    background:'rgba(124,124,240,0.08)', backdropFilter:'blur(8px)',
-    border:'1px solid rgba(124,124,240,0.3)', borderRadius:10,
+    fontSize:13, color: theme.accentText,
+    background: theme.accent + '14', backdropFilter:'blur(8px)',
+    border: `1px solid ${theme.accent}4d`, borderRadius:10,
     padding:'7px 14px', flexShrink:0,
     display:'flex', alignItems:'center', gap:6,
   },
 
+  // ── Floor pills in the top bar (center zone) ──
+  floorPillsWrap: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: 10,
+    flex: 1,
+    justifyContent: 'center',
+    minWidth: 0,
+  },
+  floorPillsLabel: {
+    fontSize: 18,
+    fontWeight: 900,
+    color: theme.textMuted,
+    flexShrink: 0,
+    letterSpacing: '0.5px',
+  },
+  floorPills: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: 6,
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+  },
+  floorPill: {
+    padding: '6px 14px',
+    borderRadius: 13,
+    border: `2px solid ${theme.glassBorder}`,
+    background: theme.mode === 'dark' ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.05)',
+    backdropFilter: 'blur(8px)',
+    color: theme.textMuted,
+    fontSize: 15,
+    fontWeight: 700,
+    fontFamily: 'inherit',
+    cursor: 'pointer',
+    transition: 'background 0.15s, color 0.15s, border-color 0.15s',
+    whiteSpace: 'nowrap',
+  },
+  floorPillActive: {
+    background: theme.accent,
+    color: '#ffffff',
+    border: `1px solid ${theme.accent}`,
+    fontWeight: 700,
+  },
+
   body: { flex:1, display:'grid', gridTemplateColumns:'1fr 380px', overflow:'hidden', position:'relative', zIndex:1 },
-  mapWrap: { padding:14, overflow:'hidden', display:'flex', alignItems:'center', justifyContent:'center' },
+  mapWrap: { padding:14, overflow:'hidden', display:'flex', alignItems:'center', justifyContent:'center', position:'relative' },
 
   panel: {
     display:'flex', flexDirection:'column',
-    background:'rgba(7,18,32,0.45)',
+    background: theme.mode === 'dark' ? 'rgba(7,18,32,0.45)' : 'rgba(255,255,255,0.42)',
     backdropFilter:'blur(20px) saturate(160%)',
     WebkitBackdropFilter:'blur(20px) saturate(160%)',
-    borderLeft:'1px solid rgba(255,255,255,0.08)',
+    borderLeft: `1px solid ${theme.headerBorder}`,
     overflow:'hidden',
+    transition: 'background 0.3s, border-color 0.3s',
   },
-  sec: { borderBottom:'1px solid rgba(255,255,255,0.06)', padding:'16px 20px', flexShrink:0 },
-  secLabel: { fontSize:12, letterSpacing:'1.2px', color:'#7fa8bd', textTransform:'uppercase', marginBottom:10, display:'flex', alignItems:'center', gap:7, fontWeight:600 },
-  destName: { fontSize:20, fontWeight:700, color:'#9B9BF5', marginBottom:6, lineHeight:1.3 },
-  destSub:  { fontSize:14, color:'#7fa8bd', marginBottom:6 },
-  destDesc: { fontSize:13, color:'#8aa5b8', lineHeight:1.6 },
-  muted:    { fontSize:14, color:'#7fa8bd', lineHeight:1.7 },
+  sec: { borderBottom: `1px solid ${theme.glassBorder}`, padding:'16px 20px', flexShrink:0 },
+  secLabel: { fontSize:12, letterSpacing:'1.2px', color: theme.textMuted, textTransform:'uppercase', marginBottom:10, display:'flex', alignItems:'center', gap:7, fontWeight:600 },
+  destName: { fontSize:20, fontWeight:700, color: theme.accentText, marginBottom:6, lineHeight:1.3 },
+  destSub:  { fontSize:14, color: theme.textMuted, marginBottom:6 },
+  destDesc: { fontSize:13, color: theme.textMuted, lineHeight:1.6 },
+  muted:    { fontSize:14, color: theme.textMuted, lineHeight:1.7 },
   step:     { display:'flex', gap:12, alignItems:'flex-start', marginBottom:14 },
   stepNum: {
-    background:'rgba(124,124,240,0.12)', backdropFilter:'blur(4px)',
-    border:'1px solid rgba(124,124,240,0.3)', borderRadius:'50%',
+    background: theme.accent + '1f', backdropFilter:'blur(4px)',
+    border: `1px solid ${theme.accent}4d`, borderRadius:'50%',
     width:32, height:32, display:'flex', alignItems:'center', justifyContent:'center',
-    fontSize:14, color:'#9B9BF5', flexShrink:0, fontWeight:700,
+    fontSize:14, color: theme.accentText, flexShrink:0, fontWeight:700,
   },
-  stepText: { fontSize:15, color:'#dceaf9', lineHeight:1.5, margin:0, fontWeight:500 },
-  stepSub:  { fontSize:12, color:'#7fa8bd', margin:0, marginTop:3 },
-  stepNav: {display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 'auto', paddingTop: 14, 
-    borderTop: '1px solid rgba(255,255,255,0.06)',
+  stepText: { fontSize:15, color: theme.textPrimary, lineHeight:1.5, margin:0, fontWeight:500 },
+  stepSub:  { fontSize:12, color: theme.textMuted, margin:0, marginTop:3 },
+  stepNav: {
+    display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 'auto', paddingTop: 14,
+    borderTop: `1px solid ${theme.glassBorder}`,
   },
   stepNavBtn: {
-    background: 'rgba(124,124,240,0.12)', backdropFilter: 'blur(8px)', border: '1px solid rgba(124,124,240,0.3)', 
-    borderRadius: 10, color: '#9B9BF5', fontSize: 13, fontWeight: 600, padding: '8px 16px', cursor: 'pointer', 
+    background: theme.accent + '1f', backdropFilter: 'blur(8px)', border: `1px solid ${theme.accent}4d`,
+    borderRadius: 10, color: theme.accentText, fontSize: 13, fontWeight: 600, padding: '8px 16px', cursor: 'pointer',
     fontFamily: 'inherit', transition: 'opacity 0.15s',
   },
-  stepNavBtnDisabled: { opacity: 0.35, cursor: 'not-allowed', },
-  stepCounter: { fontSize: 13, color: '#7fa8bd', fontFamily: 'monospace', },
+  stepNavBtnDisabled: { opacity: 0.35, cursor: 'not-allowed' },
+  stepCounter: { fontSize: 13, color: theme.textMuted, fontFamily: 'monospace' },
   qrRow:    { display:'flex', alignItems:'center', gap:12 },
   emptyState: { display:'flex', flexDirection:'column', alignItems:'center', gap:14, padding:20 },
   goHomeBtn: {
@@ -806,10 +933,10 @@ const s = {
   },
   homeBtnBottom: {
     width:'100%',
-    background:'rgba(255,255,255,0.06)', backdropFilter:'blur(8px)',
-    border:'1px solid rgba(124,124,240,0.3)', borderRadius:12,
-    color:'#9B9BF5', fontSize:15, fontWeight:600, padding:'12px 16px', cursor:'pointer',
+    background: theme.accent + '1f', backdropFilter:'blur(8px)',
+    border: `1px solid ${theme.accent}4d`, borderRadius:12,
+    color: theme.accentText, fontSize:15, fontWeight:600, padding:'12px 16px', cursor:'pointer',
     fontFamily:'inherit', display:'flex', alignItems:'center', justifyContent:'center', gap:8,
     transition:'background 0.15s',
   },
-}
+})

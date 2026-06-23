@@ -23,9 +23,6 @@ export const SCALE = { W: 640, H: 480, PAD: 24, xM: 22, yM: 22 }
 export const sx = x => SCALE.PAD + (x / SCALE.xM) * (SCALE.W - SCALE.PAD * 2)
 export const sy = y => SCALE.PAD + (y / SCALE.yM) * (SCALE.H - SCALE.PAD * 2)
 
-// ─────────────────────────────────────────────────────────────
-//  LOCATIONS (nodes) — from teammate's INITIAL_DB
-// ─────────────────────────────────────────────────────────────
 export const LOCATIONS = [
   // ── Kiosk ───────────────────────────────────────────────────
   { id:"kiosk", name: "Kiosk (You Are Here)", floor:1, x:6.3, y:9.5, type:"kiosk", desc:"Smart Campus Navigation Kiosk — beside the elevator." },
@@ -50,21 +47,21 @@ export const LOCATIONS = [
   { id:31, name:'Guidance Office',        floor:1, building:1, x:17.5, y:20,   type:'office',    desc:'Guidance office.' },
   { id:32, name:'NSTP Office',            floor:1, building:1, x:17.5, y:17,   type:'office',    desc:'NSTP office.' },
   { id:33, name:'Accounting Office',      floor:1, building:1, x:17.5, y:13,   type:'accounting',desc:'Accounting Office' },
-  { id:34, name:'Accounting - Window 1',               floor:1, building:1, x:17.7, y:11,   type:'accounting',desc:'Accounting Office - Window 1' },
-  { id:35, name:'Accounting - Window 2',               floor:1, building:1, x:18.3, y:11,   type:'accounting',desc:'Accounting Office - Window 2' },
-  { id:36, name:'Accounting - Window 3',               floor:1, building:1, x:18.9, y:11,   type:'accounting',desc:'Accounting Office - Window 3' },
-  { id:37, name:'Accounting - Window 4',               floor:1, building:1, x:19.5, y:11,   type:'accounting',desc:'Accounting Office - Window 4' },
-  { id:38, name:'Accounting - Window 5',               floor:1, building:1, x:20.1, y:11,   type:'accounting',desc:'Accounting Office - Window 5' },
-  { id:39, name:'Accounting - Window 6',               floor:1, building:1, x:20.5, y:12.1, type:'accounting',desc:'Accounting Office - Window 6' },
-  { id:40, name:'Accounting - Window 7',               floor:1, building:1, x:20.5, y:13.2, type:'accounting',desc:'Accounting Office - Window 7' },
-  { id:41, name:'Accounting - Window 8',               floor:1, building:1, x:20.5, y:14.3, type:'accounting',desc:'Accounting Office - Window 8' },
-  { id:42, name:'Accounting - Window 9',               floor:1, building:1, x:20.5, y:15.4, type:'accounting',desc:'Accounting Office - Window 9' },
+  { id:34, name:'Accounting - Window 1',  floor:1, building:1, x:17.7, y:11,   type:'accounting',desc:'Accounting Office - Window 1' },
+  { id:35, name:'Accounting - Window 2',  floor:1, building:1, x:18.3, y:11,   type:'accounting',desc:'Accounting Office - Window 2' },
+  { id:36, name:'Accounting - Window 3',  floor:1, building:1, x:18.9, y:11,   type:'accounting',desc:'Accounting Office - Window 3' },
+  { id:37, name:'Accounting - Window 4',  floor:1, building:1, x:19.5, y:11,   type:'accounting',desc:'Accounting Office - Window 4' },
+  { id:38, name:'Accounting - Window 5',  floor:1, building:1, x:20.1, y:11,   type:'accounting',desc:'Accounting Office - Window 5' },
+  { id:39, name:'Accounting - Window 6',  floor:1, building:1, x:20.5, y:12.1, type:'accounting',desc:'Accounting Office - Window 6' },
+  { id:40, name:'Accounting - Window 7',  floor:1, building:1, x:20.5, y:13.2, type:'accounting',desc:'Accounting Office - Window 7' },
+  { id:41, name:'Accounting - Window 8',  floor:1, building:1, x:20.5, y:14.3, type:'accounting',desc:'Accounting Office - Window 8' },
+  { id:42, name:'Accounting - Window 9',  floor:1, building:1, x:20.5, y:15.4, type:'accounting',desc:'Accounting Office - Window 9' },
 
   // ── Building 2 — Ground Floor ──────────────────────────────
   { id:10, name:'HRM Tools & Equipment',  floor:1, building:2, x:11.5, y:4,    type:'laboratory',desc:'HRM Tools and Equipment.' },
   { id:11, name:'B2.11',                  floor:1, building:2, x:17,   y:8,    type:'laboratory',desc:'Computer Hardware Servicing, Electronics/Electrical Room.' },
   { id:12, name:'B2.12',                  floor:1, building:2, x:15,   y:8,    type:'room',      desc:'Academic Lecture Room, AVR Extension Room-2.' },
-  { id:13, name:'Supply Section',         floor:1, building:2, x:20.5, y:4,    type:'facility',    desc:'Handles procurement and inventory management for the college.' },
+  { id:13, name:'Supply Section',         floor:1, building:2, x:20.5, y:4,    type:'facility',  desc:'Handles procurement and inventory management for the college.' },
   { id:14, name:'Library',                floor:1, building:2, x:20.5, y:1.5,  type:'library',   desc:'Provides study resources and study area for student research and reading.' },
 
   // ── Building 3 — Ground Floor ──────────────────────────────
@@ -85,7 +82,7 @@ export const LOCATIONS = [
   { id:50, name:"Academic Affairs Office",                               floor:2, building:1, x:14.8, y:17, type:"office", desc:"Office of the Vice President."},
   { id:51, name:"Online Teaching Hub",                                   floor:2, building:1, x:14.8, y:18.8, type:"facility", desc:"ODEL / Open & Distance E-Learning."},
   { id:52, name:"B1.21",                                                 floor:2, building:1, x:17.8, y:13.3, type:"laboratory", desc:"Judicial Court Simulation Laboratory."},
-  { id:53, name:"Multi-Purpose Academic Hall",                                    floor:2, building:1, x:17.8, y:15.5, type:"office", desc:"Multi-Purpose Academic Hall."},
+  { id:53, name:"Multi-Purpose Academic Hall",                           floor:2, building:1, x:17.8, y:15.5, type:"office", desc:"Multi-Purpose Academic Hall."},
   { id:54, name:"B1.21",                                                 floor:2, building:1, x:17.8, y:17.5, type:"laboratory", desc:"Judicial Court Simulation Laboratory."},
   { id:55, name:"Office of the College Deans",                           floor:2, building:1, x:17.8, y:18.8, type:"laboratory", desc:"Academic Consultation Room 2 & 3."},
 
@@ -107,20 +104,20 @@ export const LOCATIONS = [
   { id:61, name:"Boardroom",              floor:2, building:3,  x:4,    y:13.3, type:"facility",  desc:"For board."},
 
   // ── Building 4 — 2nd Floor ─────────────────────────────────
-  { id:43, name:"B4.21", floor:2, building: 4, x:4.5, y:6,   type:"laboratory", desc:"Cisco Networking Simulation Laboratory." },
-  { id:44, name:"B4.22", floor:2, building: 4, x:4.5, y:2,   type:"laboratory", desc:"Foreign Language / Speech Laboratory." },
-  { id:45, name:"B4.23", floor:2, building: 4, x:6.5, y:6.5, type:"laboratory", desc:"Digital & Robotics Modeling Laboratory." },
-  { id:46, name:"B4.24", floor:2, building: 4, x:6.5, y:3.8, type:"laboratory", desc:"E-Learning Hub." },
-  { id:47, name:"B4.25", floor:2, building: 4, x:6.5, y:1.3, type:"facility",    desc:"Senior High School Department." },
+  { id:43, name:"B4.21",                  floor:2, building: 4, x:4.5,  y:6,   type:"laboratory", desc:"Cisco Networking Simulation Laboratory." },
+  { id:44, name:"B4.22",                  floor:2, building: 4, x:4.5,  y:2,   type:"laboratory", desc:"Foreign Language / Speech Laboratory." },
+  { id:45, name:"B4.23",                  floor:2, building: 4, x:6.5,  y:6.5, type:"laboratory", desc:"Digital & Robotics Modeling Laboratory." },
+  { id:46, name:"B4.24",                  floor:2, building: 4, x:6.5,  y:3.8, type:"laboratory", desc:"E-Learning Hub." },
+  { id:47, name:"B4.25",                  floor:2, building: 4, x:6.5,  y:1.3, type:"facility",   desc:"Senior High School Department." },
 
   // ── Restrooms — 2nd Floor ───────────────────────────────────
-  { id:"B-M2",  name:"Men's CR (2F)",   floor:2, building: 4, x:11,  y:9.8, type:"facility", desc:"Boys' restroom with 3 stalls and 2 sinks." },
+  { id:"B-M2",  name:"Men's CR (2F)",      floor:2, building: 4, x:11,  y:9.8, type:"facility", desc:"Boys' restroom with 3 stalls and 2 sinks." },
   { id:"B2-F2", name:"Ladies' CR (B2-2F)", floor:2, building: 2, x:20,  y:9.8, type:"facility", desc:"Ladies' restroom with 3 stalls and 2 sinks." },
   { id:"B4-F2", name:"Ladies' CR (B4-2F)", floor:2, building: 4, x:1.5, y:9.8, type:"facility", desc:"Ladies' restroom with 3 stalls and 2 sinks." },
 
   // ── Building 1 — 3rd Floor ─────────────────────────────────
-  { id:"B1-GYM", name:"Volleyball / Badminton Court",                     floor:3, building:1, x:16.5, y:10,   type:"gym",    desc:"Gymnasium for Volleyball, Badminton, and P.E. Classes."},
-  { id:"AHRO",   name:"Administration & Human Resources Office (AHRO)",          floor:3, building:1, x:20,   y:18.5, type:"office", desc:"Office for enrollment & records, ID & credentials, and HR for employees."},
+  { id:"B1-GYM", name:"Volleyball / Badminton Court",                             floor:3, building:1, x:16.5, y:10,   type:"gym",    desc:"Gymnasium for Volleyball, Badminton, and P.E. Classes."},
+  { id:"AHRO",   name:"Administration & Human Resources Office (AHRO)",           floor:3, building:1, x:20,   y:18.5, type:"office", desc:"Office for enrollment & records, ID & credentials, and HR for employees."},
   { id:"SPAMO",  name:"Special Projects Affiliations & Marketing Office (SPAMO)", floor:3, building:1, x:12.5, y:18.5, type:"office", desc:"Office for OJT/Internship, Job Placement, Almni relations, and Industry linkages."},
 
   // ── Building 2 — 3rd Floor ─────────────────────────────────
@@ -167,7 +164,7 @@ export const LOCATIONS = [
   { id:85, name:"B2.48", floor:4, building:2, x:17.5, y:1, type:"room", desc:"Lecture room for classes."},
   
   // ── Building 3 — 4th Floor ─────────────────────────────────
-  { id:"FC", name:"Food Court", floor:4, building:3, x:7, y:10, type:"facility", desc:"Food stalls inside the campus." },
+  { id:"FC", name:"Food Court", floor:4, building:3, x:7, y:11, type:"facility", desc:"Food stalls inside the campus." },
 
   // ── Building 4 — 4th Floor ─────────────────────────────────
   { id:86, name:"B4.41", floor:4, building:4, x:4.5, y:7, type:"room", desc:"Lecture room for classes." },
@@ -502,19 +499,19 @@ export const FLOOR_BLOCKS = {
     { x:13,   y:14,   w:2.5, h:1.5, label:'Female Restroom',       type:'facility' },
     { x:15.5, y:14,   w:0.8, h:0.7, label:'Stairs',                type:'stairs' },
     // Building 2 rooms
-    { x:11.5, y:0,   w:9,   h:3,   label:'Library',              type:'lab' },
+    { x:11.5, y:0,   w:9,   h:3,   label:'Library',              type:'library' },
     { x:16,   y:3,   w:4.5, h:2.5, label:'Supply Section',       type:'office' },
-    { x:11.5, y:3,   w:4.5, h:2.5, label:'HRM Tools & Equipment',type:'lab' },
-    { x:16,   y:5.5, w:4.5, h:2.5, label:'Laboratory',           type:'lab' },
+    { x:11.5, y:3,   w:4.5, h:2.5, label:'HRM Tools & Equipment',type:'facility' },
+    { x:16,   y:5.5, w:4.5, h:2.5, label:'Laboratory',           type:'laboratory' },
     { x:12.5, y:5.5, w:3.5, h:2.5, label:'Multi-Purpose',        type:'facility' },
-    { x:11.5, y:5.5, w:1,   h:2.5, label:'Electrical Room',      type:'lab' },
+    { x:11.5, y:5.5, w:1,   h:2.5, label:'Electrical Room',      type:'facility' },
     { x:11.5, y:8,   w:2,   h:1.5, label:'',                     type:'facility' },
     { x:18.5, y:8,   w:2,   h:1.5, label:'',                     type:'facility' },
     { x:12,   y:8.5, w:2,   h:1,   label:'Stairs',               type:'stairs' },
     { x:18,   y:8.5, w:2,   h:1,   label:'Stairs',               type:'stairs' },
     // Building 3 rooms
-    { x:0.5, y:17.5, w:4,   h:3.5, label:'Clinic',           type:'lab' },
-    { x:0.5, y:11,   w:4,   h:3.3, label:'Drug Testing Room',type:'lab' },
+    { x:0.5, y:17.5, w:4,   h:3.5, label:'Clinic',           type:'facility' },
+    { x:0.5, y:11,   w:4,   h:3.3, label:'Drug Testing Room',type:'facility' },
     { x:6.5, y:18.5, w:4,   h:2.5, label:'Admission Office', type:'office' },
     { x:6.5, y:16.5, w:4,   h:2,   label:'Testing Room',     type:'office' },
     { x:6.5, y:11,   w:4,   h:4.5, label:'Social Lounge',    type:'facility' },
@@ -527,8 +524,8 @@ export const FLOOR_BLOCKS = {
     { x:8.5, y:8,   w:2,   h:1.5, label:'',          type:'facility' },
     { x:0.5, y:0,   w:5,   h:8,   label:'',          type:'building' },
     { x:5.5, y:0,   w:5,   h:2.6, label:'',          type:'building' },
-    { x:5.5, y:2.6, w:5,   h:2.7, label:'Laboratory',type:'lab' },
-    { x:5.5, y:5.3, w:5,   h:2.7, label:'Laboratory',type:'lab' },
+    { x:5.5, y:2.6, w:5,   h:2.7, label:'Laboratory',type:'laboratory' },
+    { x:5.5, y:5.3, w:5,   h:2.7, label:'Laboratory',type:'laboratory' },
     { x:5,   y:9,   w:1,   h:1,   label:'Elevator',  type:'elevator' },
     { x:1.5, y:8.5, w:2,   h:1,   label:'Stairs',    type:'stairs' },
     { x:8,   y:8.5, w:2,   h:1,   label:'Stairs',    type:'stairs' },
@@ -544,11 +541,11 @@ export const FLOOR_BLOCKS = {
     { x:10.5, y:9.5, w:1,   h:0.5, label:'',           type:'hallway' },
     // Restrooms
     { x:10,   y:8,  w:2,   h:1.5, label:'Restroom', type:'facility' },
-    { x:20,   y:8,  w:1,   h:2,   label:'Restroom', type:'facility' },
+    { x:20,   y:8,  w:1.5,   h:2,   label:'Restroom', type:'facility' },
     //Building 1 rooms
     {x:17.8,  y:18.3, w:3.7, h:2.7, label:'Office of the College Deans',                           type:'office'},
-    {x:17.8,  y:16.8, w:3.7, h:1.5, label:'Judicial Court Simulation Lab',                         type:'lab'},
-    {x:17.8,  y:12.8, w:3.7, h:1.5, label:'Judicial Court Simulation Lab',                         type:'lab'},
+    {x:17.8,  y:16.8, w:3.7, h:1.5, label:'Judicial Court Simulation Lab',                         type:'laboratory'},
+    {x:17.8,  y:12.8, w:3.7, h:1.5, label:'Judicial Court Simulation Lab',                         type:'laboratory'},
     {x:17.8,  y:14.3, w:3.7, h:2.5, label:'Multi-Purpose Academic Hall',                           type:'office'},
     {x:11.5,  y:11,   w:10,  h:1,   label:'Office of the College Deans and Academic Coordinators', type:'office'},
     {x:11.5,  y:12,   w:3.3, h:3,   label:'Faculty Room & Lounge',                                 type:'facility'},
@@ -557,12 +554,12 @@ export const FLOOR_BLOCKS = {
     {x:14.8,  y:14,   w:1.2, h:2,   label:'Stairs',                                                type:'stairs'},
     {x:15.6,  y:19.7, w:1.4, h:1.3, label:'Stairs',                                                type:'stairs'},
     // Building 2 rooms
-    { x:11.5, y:0,   w:4,   h:2.6, label:'Computer Laboratory', type:'lab' },
-    { x:11.5, y:2.6, w:4,   h:2.7, label:'Computer Laboratory', type:'lab' },
-    { x:11.5, y:5.3, w:4,   h:2.7, label:'Computer Laboratory', type:'lab' },
-    { x:17.5, y:0,   w:4,   h:2.6, label:'Computer Laboratory', type:'lab' },
-    { x:17.5, y:2.6, w:4,   h:2.7, label:'Computer Laboratory', type:'lab' },
-    { x:17.5, y:5.3, w:4,   h:2.7, label:'Computer Laboratory', type:'lab' },
+    { x:11.5, y:0,   w:4,   h:2.6, label:'Computer Laboratory', type:'laboratory' },
+    { x:11.5, y:2.6, w:4,   h:2.7, label:'Computer Laboratory', type:'laboratory' },
+    { x:11.5, y:5.3, w:4,   h:2.7, label:'Computer Laboratory', type:'laboratory' },
+    { x:17.5, y:0,   w:4,   h:2.6, label:'Computer Laboratory', type:'laboratory' },
+    { x:17.5, y:2.6, w:4,   h:2.7, label:'Computer Laboratory', type:'laboratory' },
+    { x:17.5, y:5.3, w:4,   h:2.7, label:'Computer Laboratory', type:'laboratory' },
     { x:15.5, y:0,   w:2,   h:1.5, label:'MIS Room',            type:'office' },
     { x:12,   y:8,   w:2,   h:1.5, label:'Stairs',              type:'stairs' },
     { x:18,   y:8,   w:2,   h:1.5, label:'Stairs',              type:'stairs' },
@@ -571,7 +568,7 @@ export const FLOOR_BLOCKS = {
     {x:0.5, y:14.3, w:3.5, h:3.3, label:'Board Room',             type:'facility'},
     {x:0.5, y:17.6, w:3.5, h:3.4, label:'Office of the Chairman', type:'office'},
     {x:7,   y:16.5, w:3.5, h:2.3, label:'Broadcasting Room',      type:'room'},
-    {x:7,   y:18.7, w:3.5, h:2.3, label:'Media Arts Center',      type:'room'},
+    {x:7,   y:18.8, w:3.5, h:2.2, label:'Media Arts Center',      type:'room'},
     {x:7,   y:11,   w:3.5, h:1.5, label:'Restroom',               type:'facility'},
     {x:7,   y:12.5, w:3.5, h:1.5, label:'MIS Department',         type:'office'},
     {x:7,   y:14,   w:3.5, h:1.5, label:"",                       type:'facility'},
@@ -580,10 +577,10 @@ export const FLOOR_BLOCKS = {
     // Building 4 rooms
     { x:0.5, y:8,   w:1,   h:2,   label:'Restroom',                    type:'facility' },
     { x:5,   y:9,   w:1,   h:1,   label:'Elevator',                    type:'elevator' },
-    { x:0.5, y:4,   w:4,   h:4,   label:'CISCO Room',                  type:'lab' },
-    { x:0.5, y:0,   w:4,   h:4,   label:'Speech Laboratory',           type:'lab' },
-    { x:6.5, y:5.2, w:4,   h:2.8, label:'DRM Laboratory',              type:'lab' },
-    { x:6.5, y:2.5, w:4,   h:2.7, label:'E-Learning Hub',              type:'lab' },
+    { x:0.5, y:4,   w:4,   h:4,   label:'CISCO Room',                  type:'laboratory' },
+    { x:0.5, y:0,   w:4,   h:4,   label:'Speech Laboratory',           type:'laboratory' },
+    { x:6.5, y:5.2, w:4,   h:2.8, label:'DRM Laboratory',              type:'laboratory' },
+    { x:6.5, y:2.5, w:4,   h:2.7, label:'E-Learning Hub',              type:'laboratory' },
     { x:6.5, y:0,   w:4,   h:2.5, label:'Senior High School Dept.',     type:'office' },
     { x:1.5, y:8,   w:2,   h:1.5, label:'Stairs',                      type:'stairs' },
     { x:8,   y:8,   w:2,   h:1.5, label:'Stairs',                      type:'stairs' },
@@ -600,8 +597,8 @@ export const FLOOR_BLOCKS = {
     // Hallways
     { x:0.5,  y:10, w:21, h:1,  label:'', type:'hallway' },
     { x:10.5, y:11, w:1,  h:10, label:'', type:'hallway' },
-    {x:10.5,y:8, w:1, h:2,label:""},
-    {x:5, y:9, w:1, h:1, label:"Elevator"},
+    {x:10.5,y:8, w:1, h:2,label:"",       type:'hallway'},
+    {x:5, y:9, w:1, h:1, label:"Elevator",type:'elevator'},
     //Building 1 rooms
     {x:17,   y:18.5, w:4.5, h:2.5, label:'AHRO',   type:'office'},
     {x:11.5, y:18.5, w:4.1, h:2.5, label:'SPAMO',  type:'office'},
@@ -647,7 +644,7 @@ export const FLOOR_BLOCKS = {
     { x:4.4,  y:9.5, w:2.3, h:0.5, label:'', type:'hallway' },
     { x:10.5, y:9.5, w:1,   h:0.5, label:'', type:'hallway' },
     //Hallways
-    {x:10.5, y:8, w:1, h:2,   label:''},
+    {x:10.5, y:8, w:1, h:2,   label:'',         type:'hallway'},
     {x:5,    y:9, w:1, h:1,   label:'Elevator', type:'elevator'},
     {x:12,   y:8, w:2, h:1.5, label:'Stairs',   type:'stairs'},
     {x:18,   y:8, w:2, h:1.5, label:'Stairs',   type:'stairs'},
@@ -744,47 +741,46 @@ export const FLOOR_BLOCKS = {
     {x:20,   y:8, w:1.5, h:2,   label:"Female Dressing Room", type:'facility'},
 
     //Building 4 rooms
-    {x:1.5, y:8, w:2, h:1.5, label:"Stairs"},
-    {x:8, y:8, w:2, h:1.5, label:"Stairs"},
-    {x:0.5, y:8, w:1, h:2, label:""},
-    {x:10, y:8, w:1, h:2, label:""},
-    {x:3.2, y:0, w:5, h:1.8, label:"Stage"},
-    {x:8.2, y:0, w:2.8, h:1.5, label:"Back stage"},
-    {x:0.5, y:0, w:2.7, h:1.5, label:"Back stage"},
-    {x:1.2, y:2.3, w:9, h:2.5, label:"Chairs"},
-    {x:1.2, y:4.8, w:9, h:2.5, label:""},
-    {x:2, y:4.8, w:7.5, h:2.5, label:"ISHTM Hotel Simulation Laboratory"},
+    {x:1.5, y:8,   w:2,   h:1.5, label:"Stairs",                            type:'stairs'},
+    {x:8,   y:8,   w:2,   h:1.5, label:"Stairs",                            type:'stairs'},
+    {x:0.5, y:8,   w:1,   h:2,   label:"",                                  type:'facility'},
+    {x:10,  y:8,   w:0.5, h:2,   label:"",                                  type:'facility'},
+    {x:3,   y:0,   w:5,   h:1.8, label:"Stage",                             type:'facility'},
+    {x:8,   y:0,   w:2.5, h:1.5, label:"Back stage",                        type:'facility'},
+    {x:0.5, y:0,   w:2.5, h:1.5, label:"Back stage",                        type:'facility'},
+    {x:1.3, y:2.3, w:8.5, h:2.5, label:"Chairs",                            type:'chairs'},
+    {x:1.3, y:4.8, w:8.5, h:2.5, label:"",                                  type:'facility'},
+    {x:2.1, y:4.8, w:7,   h:2.5, label:"ISHTM Hotel Simulation Laboratory", type:'laboratory'},
   ],
 
   7: [
-      //Building Blocks
-      {x:0.5, y:0,   w:10,   h:10,  label:'Building 4', type:'building' },
-      {x:0.5, y:0,   w:10.5, h:10,  label:""},
-      {x:1.2, y:2.3, w:9,    h:2.5, label:"Chairs"},
-      {x:0.5, y:4.5, w:10.5, h:3.5, label:""},
+    //Building Blocks
+    {x:0.5, y:0,   w:10,  h:10,  label:'Building 4', type:'building' },
+    {x:1.3, y:2.3, w:8.5, h:2.5, label:"Chairs",     type:'chairs'},
+    {x:0.5, y:4.5, w:10,  h:3.5, label:"",           type:'facility'},
 
-      //Theatre
-      {x:1.5, y:8, w:2, h:1, label:"Stairs"},
-      {x:8, y:8, w:2, h:1, label:"Stairs"},
-      {x:0.5, y:8, w:1, h:2,label:""},
-      {x:10, y:8, w:1, h:2,label:""},
-      {x:3.2, y:0, w:5, h:1.8,label:"Stage"},
-      {x:8.2, y:0, w:2.8, h:1.5,label:"Back stage"},
-      {x:0.5, y:0, w:2.7, h:1.5,label:"Back stage"},
-      {x:1.2, y:5, w:9, h:2,label:"Chairs"},
-      {x:4.2, y:7, w:3, h:1,label:"Theatre Operator"},
-    ],
+    //Theatre
+    {x:1.5, y:8, w:2,   h:1,  label:"Stairs",           type:'stairs'},
+    {x:8,   y:8, w:2,   h:1,  label:"Stairs",           type:'stairs'},
+    {x:0.5, y:8, w:1,   h:2,  label:"",                 type:'facility'},
+    {x:10,  y:8, w:0.5, h:2,  label:"",                 type:'facility'},
+    {x:3,   y:0, w:5,   h:1.8,label:"Stage",            type:'facility'},
+    {x:8,   y:0, w:2.5, h:1.5,label:"Back stage",       type:'facility'},
+    {x:0.5, y:0, w:2.5, h:1.5,label:"Back stage",       type:'facility'},
+    {x:1.3, y:5, w:8.5, h:2,  label:"Chairs",           type:'chairs'},
+    {x:4.2, y:7, w:3,   h:1,  label:"Theatre Operator", type:'facility'},
+  ],
 }
 
 // ── Floor labels ─────────────────────────────────────────────
 export const FLOOR_LABELS = {
-  1: 'Ground Floor',
-  2: 'Second Floor',
-  3: 'Third Floor',
-  4: 'Fourth Floor',
-  5: 'Fifth Floor',
-  6: 'Sixth Floor',
-  7: 'Seventh Floor',
+  1: 'GROUND',
+  2: 'SECOND',
+  3: 'THIRD',
+  4: 'FOURTH',
+  5: 'FIFTH',
+  6: 'SIXTH',
+  7: 'SEVENTH',
 }
 
 // ── Type metadata (colors + icons) ───────────────────────────
@@ -795,7 +791,6 @@ export const TYPE_META = {
   Accounting:{ color:'#60a5fa', icon:'🏢', fill:'#112240' },
   library:   { color:'#c084fc', icon:'📚', fill:'#1a0f2e' },
   laboratory:{ color:'#fbbf24', icon:'💻', fill:'#1a1500' },
-  lab:       { color:'#fbbf24', icon:'🔬', fill:'#1a1500' },
   lecture:   { color:'#22d3ee', icon:'🎓', fill:'#0a1f2e' },
   lounge:    { color:'#fb923c', icon:'🛋️', fill:'#1a0f00' },
   clinic:    { color:'#f87171', icon:'🏥', fill:'#1a0505' },
@@ -896,16 +891,7 @@ function getDirections(pathIds, locs) {
   return directions;
 }
 
-// ─────────────────────────────────────────────────────────────
-//  BACKEND API PLACEHOLDER
-//  Replace with real Django endpoint when ready:
-//  GET /api/navigate/?from=200&to={destId}
-//  Returns: { path: number[], directions: object[] }
-// ─────────────────────────────────────────────────────────────
 export async function fetchNavigation(destId) {
-  // TODO: replace with real Django endpoint when ready:
-  // const res = await fetch(`/api/navigate/?from=${KIOSK_NODE_ID}&to=${destId}`)
-  // return await res.json()
 
   const dest = LOCATIONS.find(l => l.id === destId)
   if (!dest) return { path: [], directions: [] }

@@ -12,7 +12,7 @@ const KB = [
     windows: 'Proceed to Window 15.' },
 
   { keywords: ['prospectus', 'curriculum', 'evaluation', 'grade evaluation'],
-    answer: "Updating **Prospectus** and **Grade Evaluation** are released and processed at the Registrar's Window 1 & 3, Building 1, Ground Floor.",
+    answer: "Updating Prospectus and Grade Evaluation are released and processed at the **Registrar's Window 1 & 3, Building 1 - Ground Floor**.",
     location: { name: "Registrar - Window 3", query: "Registrar - Window 3" }, 
     windows: 'Proceed to Window 3.' },
 
@@ -47,19 +47,19 @@ const KB = [
     windows: 'Proceed to Window 1.' },
 
   { keywords: ['cash', 'cash payment', 'tuition fees'],
-    answer: 'For cash payments for Tuition Fees, proceed to the **Accounting - Window 2, 3, and 4**, Building 1, GF.',
+    answer: 'For cash payments for Tuition Fees, proceed to the **Accounting - Window 2, 3, or 4**, Building 1, GF.',
     location: { name: 'Accounting - Window 2', query: 'Accounting - Window 2' }, 
-    windows: 'Proceed to Window 2, 3, and 4.' },
+    windows: 'Proceed to Window 2, 3, or 4.' },
 
   { keywords: ['bank', 'express', 'bank transactions'],
-    answer: 'The EXPRESS Window (Bank Transactions) is at **Accounting - Window 5 and 6**, Building 1, GF.',
+    answer: 'The EXPRESS Window (Bank Transactions) is at **Accounting - Window 5 or 6**, Building 1, GF.',
     location: { name: 'Accounting - Window 5', query: 'Accounting - Window 5' }, 
-    windows: 'Proceed to Window 5 and 6.' },
+    windows: 'Proceed to Window 5 or 6.' },
 
   { keywords: ['clearance'],
-    answer: 'For payments for Clearances, proceed to the **Accounting - Window 7 and 8**, Building 1, GF.',
+    answer: 'For payments for Clearances, proceed to the **Accounting - Window 7 or 8**, Building 1, GF.',
     location: { name: 'Accounting - Window 7', query: 'Accounting - Window 7' }, 
-    windows: 'Proceed to Window 7 and 8.' },
+    windows: 'Proceed to Window 7 or 8.' },
 
   { keywords: ['refund', 'others'],
     answer: 'For refunds and other payments is at **Accounting - Window 9**, Building 1, GF.',
@@ -82,8 +82,9 @@ const KB = [
     answer: 'For admission and application, visit the **Admission Office** at Building 3, Ground Floor.',
     location: { name: 'Admission Office', query: 'Admission Office' },},
 
-  { keywords: ['library', 'book', 'reference', 'wifi', 'student id', 'id',],
-    answer: 'The **Library & Internet Cafe** is at Building 2, Ground Floor. You can borrow books and review here, please proceed to Library for School ID processing. Open during school hours!',
+  { keywords: ['library', 'book', 'reference', 'wifi', 'id',],
+    answer: `The **Library & Internet Cafe** is at Building 2, Ground Floor.
+    You can borrow books and review here, please proceed to Library for School ID processing. Open during school hours!`,
     location: { name: 'Library', query: 'Library' },},
 
   { keywords: ['clinic', 'nurse', 'sick', 'medicine', 'first aid', 'health'],
@@ -94,45 +95,200 @@ const KB = [
     answer: 'The **Drug Testing Center** is at Building 3, Ground Floor.',
     location: { name: 'Drug Testing Center', query: 'Drug Testing' },},
 
-  { keywords: ['comlab', 'computer laboratory', 'computer room'],
-    answer: 'Computer Laboratories are at **Building 2, 2nd Floor** — Rooms B2.21 to B2.26. What room no. of computer lab are you looking for?',},
+  { keywords: ['comlab', 'computer laboratory', 'computer'],
+    answer: `Computer Laboratories are at **Building 2, 2nd Floor** — Rooms B2.21 to B2.26.
+    
+    What room number of computer lab are you looking for?`,},
+
+  {
+  keywords: ['lecture', 'room', 'lec'],
+  answer: `Lecture Rooms are at:
+    **Building 2 — 3rd, 4th and 5th Floor** 
+      • Rooms B2.31 to B2.38
+      • Rooms B2.41 to B2.48
+      • Rooms B2.51 to B2.58
+
+    **Building 4 — 3rd, 4th and 5th Floor**
+      • Rooms B4.31 to B4.38
+      • Rooms B4.41 to B4.38
+      • Rooms B4.51 to B4.58
+
+    What lecture room number are you looking for?`,},
 
   { keywords: ['b2.21'],
-    answer: 'The B2.21 Computer Laboratory is located at **Building 2, Second Floor.**.',
+    answer: 'The B2.21 Computer Laboratory is located at **Building 2, Second Floor**.',
     location: { name: 'B2.21', query: 'B2.21' },},
   
   { keywords: ['b2.22'],
-    answer: 'The B2.22 Computer Laboratory is located at **Building 2, Second Floor.**.',
+    answer: 'The B2.22 Computer Laboratory is located at **Building 2, Second Floor**.',
     location: { name: 'B2.22', query: 'B2.22' },},
 
   { keywords: ['b2.23'],
-    answer: 'The B2.23 Computer Laboratory is located at **Building 2, Second Floor.**.',
+    answer: 'The B2.23 Computer Laboratory is located at **Building 2, Second Floor**.',
     location: { name: 'B2.23', query: 'B2.23' },},
 
   { keywords: ['b2.24'],
-    answer: 'The B2.24 Computer Laboratory is located at **Building 2, Second Floor.**.',
+    answer: 'The B2.24 Computer Laboratory is located at **Building 2, Second Floor**.',
     location: { name: 'B2.24', query: 'B2.24' },},
 
   { keywords: ['b2.25'],
-    answer: 'The B2.25 Computer Laboratory is located at **Building 2, Second Floor.**.',
+    answer: 'The B2.25 Computer Laboratory is located at **Building 2, Second Floor**.',
     location: { name: 'B2.25', query: 'B2.25' },},
 
   { keywords: ['b2.26'],
-    answer: 'The B2.26 Computer Laboratory is located at **Building 2, Second Floor.**.',
+    answer: 'The B2.26 Computer Laboratory is located at **Building 2, Second Floor**.',
     location: { name: 'B2.26', query: 'B2.26' },},
 
-  { keywords: ['gym', 'gymnasium', 'sports', 'basketball', 'pe'],
-    answer: 'The **Gymnasium** is at Building 2, 6th Floor.',
-    location: { name: 'P.E. Gymnasium', query: 'P.E. Gymnasium' }, 
-    windows: null },
+  { keywords: ['b2.31'],
+    answer: 'The B2.31 Lecture Room is located at **Building 2, Third Floor**.',
+    location: { name: 'B2.31', query: 'B2.31' },},
 
-  { keywords: ['entrance', 'enter', 'main gate', 'exit', 'go out'],
-    answer: 'The main **Entrance/Exit** is at Building 3, Ground Floor near the security guard.',
-    location: { name: 'Entrance', query: 'Entrance' }, 
-    windows: null },
+  { keywords: ['b2.32'],
+    answer: 'The B2.32 Lecture Room is located at **Building 2, Third Floor**.',
+    location: { name: 'B2.32', query: 'B2.32' },},
+
+  { keywords: ['b2.33'],
+    answer: 'The B2.33 Lecture Room is located at **Building 2, Third Floor**.',
+    location: { name: 'B2.33', query: 'B2.33' },},
+
+  { keywords: ['b2.34'],
+    answer: 'The B2.34 Lecture Room is located at **Building 2, Third Floor**.',
+    location: { name: 'B2.34', query: 'B2.34' },},
+
+  { keywords: ['b2.35'],
+    answer: 'The B2.35 Lecture Room is located at **Building 2, Third Floor**.',
+    location: { name: 'B2.35', query: 'B2.35' },},
+
+  { keywords: ['b2.36'],
+    answer: 'The B2.36 Lecture Room is located at **Building 2, Third Floor**.',
+    location: { name: 'B2.36', query: 'B2.36' },},
+
+  { keywords: ['b2.37'],
+    answer: 'The B2.37 Lecture Room is located at **Building 2, Third Floor**.',
+    location: { name: 'B2.37', query: 'B2.37' },},
+
+  { keywords: ['b2.38'],
+    answer: 'The B2.38 Lecture Room is located at **Building 2, Third Floor**.',
+    location: { name: 'B2.38', query: 'B2.38' },},
+
+  { keywords: ['b4.21', 'cisco', 'networking'],
+    answer: 'The Cisco Networking Simulation Laboratory or B4.21 is located at **Building 4 — Second Floor**. It is used for Networking and Cisco certification training.',
+    location: { name: 'B4.21', query: 'B4.21' },},
+
+  { keywords: ['b4.22', 'speech', 'foreign language'],
+    answer: `The Foreign Language / Speech Laboratory or B4.22 is located at **Building 4 — Second Floor**.
+    
+    Speech laboratory is for developing communication, pronounciation, listening, and public speaking skills through guided language and speech activities.`,
+    location: { name: 'B4.22', query: 'B4.22' },},
+
+  { keywords: ['b4.23', 'drm', 'digital', 'robotics'],
+    answer: `The Digital & Robotics Modelling Laboratory or B4.23 is located at **Building 4 — Second Floor**.
+    
+    It is used for robotics and digital design coursework. This room is also used for class lectures.`,
+    location: { name: 'B4.23', query: 'B4.23' },},
+
+  { keywords: ['b4.24', 'e-learning', 'hub'],
+    answer: `The E-Learning Hub or B4.24 is located at **Building 4 — Second Floor**.
+    
+    E-Learning Hub is used for class lectures and instructor's digital/online learning.`,
+    location: { name: 'B4.24', query: 'B4.24' },},
+
+  { keywords: ['b4.25', 'senior high', 'department', 'shs', 'shs faculty'],
+    answer: `The Senior High School Department or B4.25 is located at **Building 4 — Second Floor**.
+    
+    SHS Department is an office responsible for senior high school programs, student services, and academic concerns.`,
+    location: { name: 'B4.25', query: 'B4.25' },},
+
+  { keywords: ['gym', 'gymnasium', 'pe', 'p.e.'],
+    answer: 'The **Gymnasium** is at Building 2, 6th Floor.',
+    location: { name: 'P.E. Gymnasium', query: 'P.E. Gymnasium' },},
+
+  { keywords: ['court', 'basketball'],
+    answer: 'The **Basketball Court** is at Building 3, 3rd Floor.',
+    location: { name: 'Basketball Court', query: 'Basketball Court' },},
+
+  { keywords: ['volleyball', 'badminton'],
+    answer: 'The **Volleyball/Badminton Court** or **Gymnasium** is at Building 1, 3rd Floor.',
+    location: { name: 'Volleyball / Badminton Court', query: 'Volleyball / Badminton Court' },},
+
+  { keywords: ['entrance', 'enter', 'main gate', 'pasok'],
+    answer: 'The main **Entrance** is at Building 3, Ground Floor near the security guard.',
+    location: { name: 'Entrance', query: 'Entrance' },},
+    
+  { keywords: ['exit', 'go out', 'out', 'labas'],
+    answer: 'The **Exit** is at Building 1, Ground Floor.',
+    location: { name: 'Exit', query: 'Exit' },},
+
+  { keywords: ['food', 'food hall', 'food court', 'pagkain'],
+    answer: 'The **Food Court** is at Building 3, 3rd Floor.',
+    location: { name: 'Food Court', query: 'Food Court' },},
+
+  { keywords: ['hrm', 'tools', 'equipments'],
+    answer: 'The HRM Tools and Equipments is located at **Building 2, Ground Floor**.',
+    location: { name: 'HRM Tools & Equipment', query: 'HRM Tools & Equipment' },},
+
+  { keywords: ['computer hardware', 'electronics', 'electrical', 'b2.11'],
+    answer: 'The B2.11 or Computer Hardware Servicing / Electronics/Electrical Room is located at **Building 2, Ground Floor**.',
+    location: { name: 'B2.11', query: 'B2.11' },},
+
+  { keywords: ['avr', 'b2.12'],
+    answer: 'The B2.12 or Academic Lecture Room, AVR Extension Room-2 is located at **Building 2, Ground Floor**.',
+    location: { name: 'B2.12', query: 'B2.12' },},
+
+  { keywords: ['supply', 'uniform', 'id lace', 'jogging pants', 'tshirt', 'booklet'],
+    answer: `The Supply Section is located at **Building 2, Ground Floor** beside Library. You can claim here your uniform, booklet, id lace, and etc.`,
+    location: { name: 'Supply Section', query: 'Supply Section'},},
+
+  { keywords: ['b4.13', 'engineering lab'],
+    answer: `The Engineering Laboratory is located at **Building 4, Ground Floor**. A hands-on space for engineering coursework and projects.`,
+    location: { name: 'B4.13', query: 'B4.13'},},
+  
+  { keywords: ['b4.14', 'forensic lab'],
+    answer: `The Forensic Laboratory is located at **Building 4, Ground Floor**. It is used for forensic science training and analysis.`,
+    location: { name: 'B4.14', query: 'B4.14'},},
+  
+  { keywords: ['coordinators'],
+    answer: `The Office of the College Deans and Academic Coordinators is located at **Building 1 — Second Floor** beside Faculty Room & Lounge.`,
+    location: { name: 'Office of the College Deans and Academic Coordinators', query: 'Office of the College Deans and Academic Coordinators'},},
+
+  { keywords: ['faculty', 'teachers', 'professors'],
+    answer: `The Faculty Room & Lounge is located at **Building 1 — Second Floor**.
+    
+    Faculty Room & Lounge is a private area exclusively for faculty instructors to rest or prepare for classes and other duties.`,
+    location: { name: 'Faculty Room & Lounge', query: 'Faculty Room & Lounge'},},
+
+  { keywords: ['academic affairs', 'policies', 'vice president'],
+    answer: `Academic Affairs Office is located at **Building 1 — Second floor** near Office of the College Deans Office.
+    
+    Academic Affairs Office is responsible for managing academic programs, policies, and other academic services.`,
+    location: { name: 'Academic Affairs Office', query: 'Academic Affairs Office'},},
+
+  { keywords: ['online class', 'distance learning', 'odel'],
+    answer: `Online Teaching Hub is located at **Building 1 — Second floor** beside Academic Affairs Office.
+    
+    Online Teaching Hub is exclusively for faculty members. This room is dedicated for online and distance learning classes.`,
+    location: { name: 'Online Teaching Hub', query: 'Online Teaching Hub'},},
+    
+  { keywords: ['b1.21', 'judicial court'],
+    answer: `Judicial Court Simulation Lab or B1.21 is located at **Building 1 — Second floor** beside Multi-Purpose Academic Hall.
+    
+    The Judicial Court Simulation Laboratory is a mock court room where students practice real courtroom proceedings, exclusively for criminology department.`,
+    location: { name: 'B1.21', query: 'B1.21'},},
+
+  { keywords: ['deans', 'consultation room'],
+    answer: `Office of the College Deans - Academic Consultation Room 2 & 3  is located at **Building 1 — Second floor** beside Judicial Court Simulation Lab.
+    
+    The office of the college deans is responsible for managing academic programs, supervising faculty, and addressing student academic concerns. It is a consultation room for student-faculty academic meetings.`,
+    location: { name: 'Office of the College Deans', query: 'Office of the College Deans'},},
+
+  { keywords: ['chairman', 'consultation room'],
+    answer: `Office of the Chairman is located at **Building 3 — Second floor**.
+    
+    Office of the Chairman is executive office responsible for institutional leadership.`,
+    location: { name: 'Office of the Chairman', query: 'Office of the Chairman'},},
 
   { keywords: ['tba'],
-    answer: 'First year? **FIRST YEAR KA NO?** Tanong mo sa mga kalbo. Punta ka sa Exit tapos uwi ka na! HAHAHAHAHAHA!',
+    answer: 'First year? **FIRST YEAR KA NO?** Punta ka lang sa ituturo ng map, ingat ka ha HAHAHAHAHAHA!',
     location: { name: 'Exit', query: 'Exit' },},
 
 ]
@@ -552,7 +708,7 @@ const s = {
   bubble: { maxWidth:'78%', padding:'12px 14px', borderRadius:'16px', wordBreak:'break-word' },
   bubbleBot:  { background:'#162d55', border:'1px solid #1e3a5f', borderBottomLeftRadius:'4px' },
   bubbleUser: { background:'linear-gradient(135deg, #378add, #1d6fb5)', borderBottomRightRadius:'4px' },
-  bubbleText: { fontSize:'15px', color:'white', margin:0, lineHeight:1.6 },
+  bubbleText: { fontSize:'15px', color:'white', margin:0, lineHeight:1.6, whiteSpace: 'pre-line'},
   bubbleTime: { fontSize:'11px', color:'#4a7fb5', margin:'5px 0 0', textAlign:'right' },
   windowHint: {
     fontSize:'12px', color:'#f59e0b',
