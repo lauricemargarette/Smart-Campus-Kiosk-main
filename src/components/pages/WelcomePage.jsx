@@ -15,7 +15,6 @@ const PARTICLES = Array.from({ length: 28 }, (_, i) => ({
 
 export default function WelcomePage() {
   const navigate = useNavigate()
-  // In WelcomePage.jsx — handle the tap/click to proceed
   const handleStart = () => {
     const el = document.documentElement
     if (el.requestFullscreen) el.requestFullscreen().catch(() => {})
@@ -30,6 +29,12 @@ export default function WelcomePage() {
       link.rel = 'stylesheet'
       link.href = 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap'
       document.head.appendChild(link)
+    }
+    if (!document.getElementById('brolimo-font')) {
+      const style = document.createElement('style')
+      style.id = 'brolimo-font'
+      style.textContent = `@import url('https://fonts.cdnfonts.com/css/brolimo');`
+      document.head.appendChild(style)
     }
   }, [])
 

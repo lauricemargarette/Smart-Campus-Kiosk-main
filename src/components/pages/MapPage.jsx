@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo, useRef } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
+import { QRCodeSVG } from 'qrcode.react'
 import {
   LOCATIONS, EDGES, FLOOR_BLOCKS, FLOOR_LABELS,
   TYPE_META, KIOSK_NODE_ID, SCALE,
@@ -104,36 +105,6 @@ function ThemeToggle({ theme, onToggle }) {
         {isDark ? <Icon.Moon size={13}/> : <Icon.Sun size={13}/>}
       </span>
     </button>
-  )
-}
-
-// ─────────────────────────────────────────────────────────────
-//  QR CODE
-// ─────────────────────────────────────────────────────────────
-function makeQR(text, size = 21) {
-  const seed = text.split('').reduce((a, c) => a * 31 + c.charCodeAt(0), 7)
-  return Array.from({ length: size }, (_, r) =>
-    Array.from({ length: size }, (_, c) => {
-      if (r < 7 && c < 7) return (r === 0 || r === 6 || c === 0 || c === 6 || (r >= 2 && r <= 4 && c >= 2 && c <= 4))
-      if (r < 7 && c > size - 8) return (r === 0 || r === 6 || c === size - 1 || c === size - 7 || (r >= 2 && r <= 4 && c >= size - 5 && c <= size - 3))
-      if (r > size - 8 && c < 7) return (r === size - 1 || r === size - 7 || c === 0 || c === 6 || (r >= size - 5 && r <= size - 3 && c >= 2 && c <= 4))
-      return ((seed * (r + 1) * (c + 3) + r * 7 + c * 13) % 5) < 2
-    })
-  )
-}
-
-function QRCode({ value, size = 80 }) {
-  const grid = useMemo(() => makeQR(String(value)), [value])
-  const cell = size / grid.length
-  return (
-    <svg width={size} height={size}
-      style={{ background: 'white', borderRadius: 6, display: 'block', flexShrink: 0 }}>
-      {grid.map((row, r) =>
-        row.map((on, c) =>
-          on ? <rect key={`${r}-${c}`} x={c*cell} y={r*cell} width={cell} height={cell} fill="#111"/> : null
-        )
-      )}
-    </svg>
   )
 }
 
@@ -261,63 +232,132 @@ function CampusMap({ floor, destId, path, currentStep = 0, theme }) {
   const currentNodeId = path[currentStep]
 
   return (
-    <svg
-      viewBox={`0 0 ${SCALE.W} ${SCALE.H}`}
-      width="100%" height="100%"
-      style={{ background: theme.mapCanvasBg, borderRadius: 14, border: `1px solid ${theme.mapCanvasBorder}`, display: 'block', boxShadow: theme.mapCanvasShadow }}
-    >
-      {/* ── PASS 1: Building outlines ── */}
+  <svg
+    viewBox={`0 0 ${SCALE.W} ${SCALE.H}`}
+    width="100%" height="100%"
+    style={{ background: theme.mapCanvasBg, borderRadius: 14, border: `1px solid ${theme.mapCanvasBorder}`, display: 'block', boxShadow: theme.mapCanvasShadow }}
+  >
+    {/* ── CLIP PATHS ── */}
+    <defs>
       {blocks.filter(b => b.type === 'building').map((b, i) => {
         const bx = sx(b.x), by = sy(b.y)
         const bw = sx(b.x + b.w) - sx(b.x)
         const bh = sy(b.y + b.h) - sy(b.y)
-        const info = BLDG_LABELS[b.label]
         return (
-          <rect key={`bldg-${i}`}
-            x={bx} y={by} width={bw} height={bh} rx="4"
-            fill={theme.mapBuildingFill}
-            stroke={info?.color || theme.mapBuildingStroke}
-            strokeWidth="2"
+          <clipPath key={`clip-${i}`} id={`clip-bldg-${floor}-${i}`}>
+            <rect x={bx} y={by} width={bw} height={bh} rx="4"/>
+          </clipPath>
+        )
+      })}
+    </defs>
+
+    {/* ── PASS 1: Building outlines ── */}
+    {blocks.filter(b => b.type === 'building').map((b, i) => {
+      const bx = sx(b.x), by = sy(b.y)
+      const bw = sx(b.x + b.w) - sx(b.x)
+      const bh = sy(b.y + b.h) - sy(b.y)
+      const info = BLDG_LABELS[b.label]
+      return (
+        <rect key={`bldg-${i}`}
+          x={bx} y={by} width={bw} height={bh} rx="4"
+          fill={theme.mapBuildingFill}
+          stroke={info?.color || theme.mapBuildingStroke}
+          strokeWidth="5"
+        />
+      )
+    })}
+
+    {/* ── PASS 2: Room blocks — clipped per building ── */}
+    {blocks.filter(b => b.type === 'building').map((building, bldgIdx) => {
+      const roomsInBuilding = blocks.filter(b => {
+        if (b.type === 'building') return false
+        if (b.type === 'hallway') return false
+        if (b.type === 'facility') return false
+        const centerX = b.x + b.w / 2
+        const centerY = b.y + b.h / 2
+        return (
+          centerX >= building.x &&
+          centerX <= building.x + building.w &&
+          centerY >= building.y &&
+          centerY <= building.y + building.h
+        )
+      })
+
+      return (
+        <g key={`bldg-rooms-${bldgIdx}`} clipPath={`url(#clip-bldg-${floor}-${bldgIdx})`}>
+          {roomsInBuilding.map((b, i) => {
+            const bx = sx(b.x), by = sy(b.y)
+            const bw = sx(b.x + b.w) - sx(b.x)
+            const bh = sy(b.y + b.h) - sy(b.y)
+            const meta = TYPE_META[b.type] || TYPE_META.facility
+            const blockFill =
+              theme.roomFillByType?.[b.type] ||
+              theme.roomFillByType?.facility ||
+              meta.fill ||
+              theme.mapBuildingFill
+            const cx = bx + bw / 2
+            const cy = by + bh / 2
+            const { lines, fontSize, lineH } = roomLabel(b.label, bw, bh)
+            const totalH = lines.length * lineH
+            const startY = cy - totalH / 2 + lineH / 2
+
+            return (
+              <g key={`room-${i}`}>
+                <rect x={bx} y={by} width={bw} height={bh} rx="3"
+                  fill={blockFill}
+                  stroke={theme.mapRoomStroke} strokeWidth="1" opacity="0.9"
+                />
+                {bw > 20 && bh > 10 && lines.map((line, li) => (
+                  <text key={li}
+                    x={cx} y={startY + li * lineH}
+                    textAnchor="middle" dominantBaseline="middle"
+                    style={{ fontSize, fill: theme.mapRoomLabel, fontFamily: 'monospace', pointerEvents: 'none', userSelect: 'none' }}
+                  >
+                    {line}
+                  </text>
+                ))}
+              </g>
+            )
+          })}
+        </g>
+      )
+    })}
+
+    {/* ── PASS 2B: rendered unclipped ── */}
+    {blocks.filter(b => b.type === 'hallway' || b.type === 'facility').map((b, i) => {
+      const bx = sx(b.x), by = sy(b.y)
+      const bw = sx(b.x + b.w) - sx(b.x)
+      const bh = sy(b.y + b.h) - sy(b.y)
+      const meta = TYPE_META[b.type] || TYPE_META.facility
+      const blockFill =
+        theme.roomFillByType?.[b.type] ||
+        theme.roomFillByType?.facility ||
+        meta.fill ||
+        theme.mapBuildingFill
+      const cx = bx + bw / 2
+      const cy = by + bh / 2
+      const { lines, fontSize, lineH } = roomLabel(b.label, bw, bh)
+      const totalH = lines.length * lineH
+      const startY = cy - totalH / 2 + lineH / 2
+
+      return (
+        <g key={`hallway-block-${i}`}>
+          <rect x={bx} y={by} width={bw} height={bh} rx="3"
+            fill={blockFill}
+            stroke={theme.mapRoomStroke} strokeWidth="1" opacity="0.9"
           />
-        )
-      })}
-
-      {/* ── PASS 2: Room blocks ── */}
-      {blocks.filter(b => b.type !== 'building').map((b, i) => {
-        const bx = sx(b.x), by = sy(b.y)
-        const bw = sx(b.x + b.w) - sx(b.x)
-        const bh = sy(b.y + b.h) - sy(b.y)
-        const meta = TYPE_META[b.type] || TYPE_META.facility
-        const blockFill =
-          theme.roomFillByType?.[b.type] ||
-          theme.roomFillByType?.facility ||
-          meta.fill ||
-          theme.mapBuildingFill
-        const cx = bx + bw / 2
-        const cy = by + bh / 2
-        const result = roomLabel(b.label, bw, bh)
-        const { lines, fontSize, lineH } = result
-        const totalH = lines.length * lineH
-        const startY = cy - totalH / 2 + lineH / 2
-
-        return (
-          <g key={`room-${i}`}>
-            <rect x={bx} y={by} width={bw} height={bh} rx="3"
-              fill={blockFill}
-              stroke={theme.mapRoomStroke} strokeWidth="1" opacity="0.9"
-            />
-            {bw > 20 && bh > 10 && lines.map((line, li) => (
-              <text key={li}
-                x={cx} y={startY + li * lineH}
-                textAnchor="middle" dominantBaseline="middle"
-                style={{ fontSize, fill: theme.mapRoomLabel, fontFamily: 'monospace', pointerEvents: 'none', userSelect: 'none' }}
-              >
-                {line}
-              </text>
-            ))}
-          </g>
-        )
-      })}
+          {bw > 20 && bh > 10 && lines.map((line, li) => (
+            <text key={li}
+              x={cx} y={startY + li * lineH}
+              textAnchor="middle" dominantBaseline="middle"
+              style={{ fontSize, fill: theme.mapRoomLabel, fontFamily: 'monospace', pointerEvents: 'none', userSelect: 'none' }}
+            >
+              {line}
+            </text>
+          ))}
+        </g>
+      )
+    })}
 
       {/* ── PASS 3: Building labels ── */}
       {blocks.filter(b => b.type === 'building').map((b, i) => {
@@ -417,17 +457,37 @@ function CampusMap({ floor, destId, path, currentStep = 0, theme }) {
         const isRoomCode = /^b\d+\.\d+$/i.test(loc.name.trim())
         const isEntrance = n.includes('entrance')
         const isExit     = n.includes('exit')
+        const isHrm      = n.includes('hrm')
+        const isLibrary  = n.includes('library')
+        const isSupply  = n.includes('supply')
+        const isDrugTest  = n.includes('drug')
+        const isClinic  = n.includes('clinic')
+        const isRestroom  = n.includes('ladies')
+        const isLounge  = n.includes('social')
+        const isAffairs  = n.includes('student')
+        const isCDJP  = n.includes('cdjp')
 
-        if (!isWindow && !isRoomCode && !isEntrance && !isExit) return null
+        if (!isWindow && !isRoomCode && !isEntrance && !isExit && !isHrm && !isLibrary && !isSupply && !isDrugTest && !isClinic & !isRestroom
+          && !isLounge && !isAffairs && !isCDJP
+        ) return null
 
         const label = isWindow
           ? 'W' + loc.name.replace(/[^0-9]/g, '')
           : isEntrance ? 'Entrance'
           : isExit     ? 'Exit'
+          : isHrm      ? 'HRM'
+          : isLibrary  ? 'Lib'
+          : isSupply   ? 'Supply'
+          : isDrugTest ? 'DTC'
+          : isClinic   ? 'Clinic'
+          : isRestroom ? 'CR'
+          : isLounge   ? 'Lounge'
+          : isAffairs  ? 'SA'
+          : isCDJP     ? 'CDJP'
           : loc.name.trim()
 
-        const pillW = Math.max(18, label.length * 5.2 + 8)
-        const pillH = 12
+        const pillW = Math.max(15, label.length * 3 + 5)
+        const pillH = 9
 
         const pillFill   = isDest ? theme.mapPillBgDest : theme.mapPillBg
         const pillStroke = isDest ? '#6eb6ff' : meta.color + '88'
@@ -438,17 +498,17 @@ function CampusMap({ floor, destId, path, currentStep = 0, theme }) {
             <rect
               x={lx - pillW / 2} y={ly - pillH / 2}
               width={pillW} height={pillH}
-              rx="3"
+              rx="2"
               fill={pillFill}
               stroke={pillStroke}
-              strokeWidth="0.8"
+              strokeWidth="0.5"
               opacity="0.95"
             />
             <text
               x={lx} y={ly}
               textAnchor="middle" dominantBaseline="middle"
               style={{
-                fontSize: 5.5,
+                fontSize: 6,
                 fill: textCol,
                 fontFamily: 'monospace',
                 fontWeight: isDest ? 700 : 400,
@@ -518,8 +578,10 @@ export default function MapPage() {
   const [directions,   setDirections]   = useState([])
   const [loading,      setLoading]      = useState(false)
   const [currentStep,  setCurrentStep]  = useState(0)
+  const [autoPlay,     setAutoPlay]     = useState(true)
   const prevDestIdRef = useRef(null)
   const prevStepRef   = useRef(0)
+  const autoPlayRef   = useRef(null)
 
   const { theme, toggleTheme } = useTheme()
 
@@ -602,6 +664,37 @@ export default function MapPage() {
       }
     }
   }, [currentStep, stepFloor])
+
+  // Auto-play: advance step every 2 seconds when a destination is selected
+  useEffect(() => {
+    if (autoPlayRef.current) clearInterval(autoPlayRef.current)
+    if (!destId || !autoPlay || displayDirections.length === 0) return
+    autoPlayRef.current = setInterval(() => {
+      setCurrentStep(prev => {
+        if (prev >= displayDirections.length - 1) {
+          // Loop back to start
+          return 0
+        }
+        return prev + 1
+      })
+    }, 3000)
+    return () => clearInterval(autoPlayRef.current)
+  }, [destId, autoPlay, displayDirections.length])
+
+  // Reset autoplay when destination changes
+  useEffect(() => {
+    if (!destId) return
+    const resetTimer = setTimeout(() => {
+      setAutoPlay(true)
+      setCurrentStep(0)
+    }, 0)
+    return () => clearTimeout(resetTimer)
+  }, [destId])
+
+  // Build the QR URL dynamically using the current machine's IP and port
+  const qrUrl = dest
+  ? `${window.location.origin}/directions?to=${dest.id}&name=${encodeURIComponent(dest.name)}&floor=${dest.floor || 1}&building=${dest.building || ''}`
+  : ''
 
   // Human-readable floor label for top bar pills
   const floorPillLabel = (f) => {
@@ -707,11 +800,12 @@ export default function MapPage() {
               <p style={s.muted}>Loading directions...</p>
             ) : displayDirections.length > 0 ? (
               <>
+                {/* ← NAWAWALA ITO — idagdag muli */}
                 <div style={s.step}>
                   <div style={s.stepNum}>{currentStep + 1}</div>
                   <div>
-                    <p style={s.stepText}>{displayDirections[currentStep].text}</p>
-                    {displayDirections[currentStep].sub && (
+                    <p style={s.stepText}>{displayDirections[currentStep]?.text}</p>
+                    {displayDirections[currentStep]?.sub && (
                       <p style={s.stepSub}>{displayDirections[currentStep].sub}</p>
                     )}
                   </div>
@@ -720,7 +814,7 @@ export default function MapPage() {
                 <div style={s.stepNav}>
                   <button
                     style={{ ...s.stepNavBtn, ...(currentStep === 0 ? s.stepNavBtnDisabled : {}) }}
-                    onClick={() => setCurrentStep(s => Math.max(0, s - 1))}
+                    onClick={() => { setAutoPlay(false); setCurrentStep(s => Math.max(0, s - 1)) }}
                     disabled={currentStep === 0}
                   >
                     ← Prev
@@ -733,18 +827,27 @@ export default function MapPage() {
                       ...s.stepNavBtn,
                       ...(currentStep === displayDirections.length - 1 ? s.stepNavBtnDisabled : {}),
                     }}
-                    onClick={() => setCurrentStep(s => Math.min(displayDirections.length - 1, s + 1))}
+                    onClick={() => { setAutoPlay(false); setCurrentStep(s => Math.min(displayDirections.length - 1, s + 1)) }}
                     disabled={currentStep === displayDirections.length - 1}
                   >
                     Next →
+                  </button>
+                  <button
+                    style={{
+                      ...s.stepNavBtn,
+                      ...(autoPlay ? { background: theme.accent + '3f' } : {}),
+                      fontSize: 15,
+                      padding: '8px 10px',
+                    }}
+                    onClick={() => setAutoPlay(p => !p)}
+                  >
+                    {autoPlay ? '⏸ Auto' : '▶ Auto'}
                   </button>
                 </div>
               </>
             ) : (
               <p style={s.muted}>
-                {dest
-                  ? 'Directions will appear here once the backend is connected.'
-                  : 'Select a destination to see directions.'}
+                {dest ? 'Directions will appear here once the backend is connected.' : 'Select a destination to see directions.'}
               </p>
             )}
           </div>
@@ -757,15 +860,20 @@ export default function MapPage() {
             </div>
           )}
 
-          {/* QR Code */}
+          {/* QR Code — uses qrcode.react for a real, scannable QR */}
           {dest && (
             <div style={s.sec}>
               <p style={s.secLabel}><Icon.QrCode size={14}/> Scan to save on phone</p>
               <div style={s.qrRow}>
-                <QRCode
-                  value={`http://192.168.8.143:5174/directions?to=${dest.id}&name=${encodeURIComponent(dest.name)}&floor=${dest.floor || 1}&building=${dest.building || ''}`}
-                  size={140}
-                />
+                <div style={{ background: 'white', padding: 8, borderRadius: 8, flexShrink: 0 }}>
+                  <QRCodeSVG
+                    value={qrUrl}
+                    size={124}
+                    bgColor="#ffffff"
+                    fgColor="#111111"
+                    level="M"
+                  />
+                </div>
                 <p style={s.muted}>Scan to save these directions on your phone.</p>
               </div>
             </div>
@@ -898,10 +1006,10 @@ const getStyles = (theme) => ({
     transition: 'background 0.3s, border-color 0.3s',
   },
   sec: { borderBottom: `1px solid ${theme.glassBorder}`, padding:'16px 20px', flexShrink:0 },
-  secLabel: { fontSize:12, letterSpacing:'1.2px', color: theme.textMuted, textTransform:'uppercase', marginBottom:10, display:'flex', alignItems:'center', gap:7, fontWeight:600 },
-  destName: { fontSize:20, fontWeight:700, color: theme.accentText, marginBottom:6, lineHeight:1.3 },
-  destSub:  { fontSize:14, color: theme.textMuted, marginBottom:6 },
-  destDesc: { fontSize:13, color: theme.textMuted, lineHeight:1.6 },
+  secLabel: { fontSize:15, letterSpacing:'1.2px', color: theme.textMuted, textTransform:'uppercase', marginBottom:10, display:'flex', alignItems:'center', gap:7, fontWeight:600 },
+  destName: { fontSize:22, fontWeight:700, color: theme.accentText, marginBottom:6, lineHeight:1.3 },
+  destSub:  { fontSize:16, color: theme.textMuted, marginBottom:6 },
+  destDesc: { fontSize:15, color: theme.textMuted, lineHeight:1.6, whiteSpace:'pre-line'},
   muted:    { fontSize:14, color: theme.textMuted, lineHeight:1.7 },
   step:     { display:'flex', gap:12, alignItems:'flex-start', marginBottom:14 },
   stepNum: {
@@ -918,7 +1026,7 @@ const getStyles = (theme) => ({
   },
   stepNavBtn: {
     background: theme.accent + '1f', backdropFilter: 'blur(8px)', border: `1px solid ${theme.accent}4d`,
-    borderRadius: 10, color: theme.accentText, fontSize: 13, fontWeight: 600, padding: '8px 16px', cursor: 'pointer',
+    borderRadius: 10, color: theme.accentText, fontSize: 15, fontWeight: 600, padding: '8px 16px', cursor: 'pointer',
     fontFamily: 'inherit', transition: 'opacity 0.15s',
   },
   stepNavBtnDisabled: { opacity: 0.35, cursor: 'not-allowed' },

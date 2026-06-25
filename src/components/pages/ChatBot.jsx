@@ -7,63 +7,63 @@ import Strands from './Strands'
 // ─────────────────────────────────────────────────────────────
 const KB = [
   { keywords: ['summary of grades', 'grades', 'sog'],
-    answer: "For **Summary of Grades**, proceed to the Registrar's Window 15 at Building 1, Ground Floor.",
-    location: { name: "Registrar - Window 15", query: "Registrar - Window 15" }, 
+    answer: "For claiming your **Summary of Grades**, proceed to the Registrar's Window 15 at Building 1, Ground Floor.",
+    location: { name: "Window 15 - Registrar", query: "Window 15 - Registrar" }, 
     windows: 'Proceed to Window 15.' },
 
   { keywords: ['prospectus', 'curriculum', 'evaluation', 'grade evaluation'],
     answer: "Updating Prospectus and Grade Evaluation are released and processed at the **Registrar's Window 1 & 3, Building 1 - Ground Floor**.",
-    location: { name: "Registrar - Window 3", query: "Registrar - Window 3" }, 
+    location: { name: "Window 3 - Registrar", query: "Window 3 - Registrar" }, 
     windows: 'Proceed to Window 3.' },
 
   { keywords: ['ctp', 'wes', 'cav', 'tesda'],
     answer: "For **CTP, WES,** and **CAV FOR TESDA**, visit the Registrar's Window 4 at Building 1, Ground Floor.",
-    location: { name: "Registrar - Window 4", query: "Registrar - Window 4" },
+    location: { name: "Window 4 - Registrar", query: "Window 4 - Registrar" },
     windows: 'Proceed to Window 4.' },
 
   { keywords: ['f137', 'tor', 'nstp serial no.'],
-    answer: "**Request and Submission of F137**, **TOR from other school**, **NSTP Serial #**, and **CTC (Certified True Copy)** are processed at the Registrar's Window 6, Building 1, GF.",
-    location: { name: "Registrar - Window 6", query: "Registrar - Window 6" }, 
+    answer: "**Request and submission of F137**, **TOR from other school**, **NSTP Serial #**, and **CTC (Certified True Copy)** are processed at the Registrar's Window 6, Building 1, GF.",
+    location: { name: "Window 6 - Registrar", query: "Window 6 - Registrar" }, 
     windows: 'Go to Window 6.' },
 
   { keywords: ['graduation', 'graduation application', 'cav', 'icoc'],
     answer: "**Graduation Application**, **CAV (CHED)**, and **ICOC Submission** are processed and released at the Registrar's Window 7, Building 1, GF.",
-    location: { name: "Registrar - Window 7", query: "Registrar - Window 7" }, 
+    location: { name: "Window 7 - Registrar", query: "Window 7 - Registrar" }, 
     windows: 'Proceed to Window 7.' },
   
   { keywords: ['grade verify', 'verification', 'completion', 'class record', 'faculty clearance'],
     answer: "**Grade Verification and Completion**, and **Submission of Class Record and Faculty Clearance** are processed and released at the Registrar's Window 9, Building 1, GF.",
-    location: { name: "Registrar - Window 9", query: "Registrar - Window 9" }, 
+    location: { name: "Window 9 - Registrar", query: "Window 9 - Registrar" }, 
     windows: 'Proceed to Window 9.' },
 
   { keywords: ['credentials', 'ctc'],
     answer: "**Releasing of Credentials / CTC (Certified True Copy)** is processed and released at the Registrar's Window 12, Building 1, GF.",
-    location: { name: "Registrar - Window 12", query: "Registrar - Window 12" }, 
+    location: { name: "Window 12 - Registrar", query: "Window 12 - Registrar" }, 
     windows: 'Proceed to Window 12.' },
 
   { keywords: ['payment', 'fee'],
-    answer: 'For payments of other fees, go to the **Accounting - Window 1** at Building 1, Ground Floor.',
-    location: { name: 'Accounting - Window 1', query: 'Accounting - Window 1' }, 
+    answer: 'Proceed to the **Accounting - Window 1 at Building 1, Ground Floor** for payments of other fees.',
+    location: { name: 'Window 1 - Accounting', query: 'Window 1 - Accounting' }, 
     windows: 'Proceed to Window 1.' },
 
   { keywords: ['cash', 'cash payment', 'tuition fees'],
-    answer: 'For cash payments for Tuition Fees, proceed to the **Accounting - Window 2, 3, or 4**, Building 1, GF.',
-    location: { name: 'Accounting - Window 2', query: 'Accounting - Window 2' }, 
+    answer: 'Proceed to the **Accounting - Window 2, 3, or 4 at Building 1, Ground Floor** for cash payments of Tuition Fees, .',
+    location: { name: 'Window 2 - Accounting', query: 'Window 2 - Accounting' }, 
     windows: 'Proceed to Window 2, 3, or 4.' },
 
   { keywords: ['bank', 'express', 'bank transactions'],
-    answer: 'The EXPRESS Window (Bank Transactions) is at **Accounting - Window 5 or 6**, Building 1, GF.',
-    location: { name: 'Accounting - Window 5', query: 'Accounting - Window 5' }, 
+    answer: 'Proceed to the EXPRESS Windows **Accounting - Windows 5 or 6 at Building 1, Ground Floor** for Bank Transaction payments.',
+    location: { name: 'Window 5 - Accounting', query: 'Window 5 - Accounting' }, 
     windows: 'Proceed to Window 5 or 6.' },
 
   { keywords: ['clearance'],
-    answer: 'For payments for Clearances, proceed to the **Accounting - Window 7 or 8**, Building 1, GF.',
-    location: { name: 'Accounting - Window 7', query: 'Accounting - Window 7' }, 
+    answer: 'Proceed to the **Accounting - Window 7 or 8 at Building 1, Ground Floor** for Clearance payments.',
+    location: { name: 'Window 7 - Accounting', query: 'Window 7 - Accounting' }, 
     windows: 'Proceed to Window 7 or 8.' },
 
   { keywords: ['refund', 'others'],
-    answer: 'For refunds and other payments is at **Accounting - Window 9**, Building 1, GF.',
-    location: { name: 'Accounting - Window 9', query: 'Accounting - Window 9' }, 
+    answer: 'Proceed to the **Accounting - Window 9 at Building 1, Ground Floor** for refunds and other payments.',
+    location: { name: 'Window 9 - Accounting', query: 'Window 9 - Accounting' }, 
     windows: 'Proceed to Window 9.' },
 
   { keywords: ['nstp', 'national service'],
@@ -82,9 +82,10 @@ const KB = [
     answer: 'For admission and application, visit the **Admission Office** at Building 3, Ground Floor.',
     location: { name: 'Admission Office', query: 'Admission Office' },},
 
-  { keywords: ['library', 'book', 'reference', 'wifi', 'id',],
-    answer: `The **Library & Internet Cafe** is at Building 2, Ground Floor.
-    You can borrow books and review here, please proceed to Library for School ID processing. Open during school hours!`,
+  { keywords: ['library', 'lib', 'book', 'reference', 'wifi', 'id',],
+    answer: `The **Library** is at Building 2, Ground Floor.
+
+    You can borrow books and review here, also proceed to the Library for School and Library ID processing. Open during school hours!`,
     location: { name: 'Library', query: 'Library' },},
 
   { keywords: ['clinic', 'nurse', 'sick', 'medicine', 'first aid', 'health'],
@@ -96,7 +97,14 @@ const KB = [
     location: { name: 'Drug Testing Center', query: 'Drug Testing' },},
 
   { keywords: ['comlab', 'computer laboratory', 'computer'],
-    answer: `Computer Laboratories are at **Building 2, 2nd Floor** — Rooms B2.21 to B2.26.
+    answer: `Computer Laboratories are at:
+    **Building 2 — 2nd Floor**
+      • Rooms B2.21 to B2.26.
+
+    **Building 4 — 2nd Floor**
+      • Room B4.21 — Cisco Networking Simulation Laboratory
+      • Room B4.22 — Foreign Language / Speech Laboratory
+      • Room B4.23 — Digital & Robotics Modelling Laboratory
     
     What room number of computer lab are you looking for?`,},
 
@@ -116,63 +124,95 @@ const KB = [
     What lecture room number are you looking for?`,},
 
   { keywords: ['b2.21'],
-    answer: 'The B2.21 Computer Laboratory is located at **Building 2, Second Floor**.',
+    answer: 'The B2.21 Computer Laboratory is located at **Building 2 - Second Floor**.',
     location: { name: 'B2.21', query: 'B2.21' },},
   
   { keywords: ['b2.22'],
-    answer: 'The B2.22 Computer Laboratory is located at **Building 2, Second Floor**.',
+    answer: 'The B2.22 Computer Laboratory is located at **Building 2 - Second Floor**.',
     location: { name: 'B2.22', query: 'B2.22' },},
 
   { keywords: ['b2.23'],
-    answer: 'The B2.23 Computer Laboratory is located at **Building 2, Second Floor**.',
+    answer: 'The B2.23 Computer Laboratory is located at **Building 2 - Second Floor**.',
     location: { name: 'B2.23', query: 'B2.23' },},
 
   { keywords: ['b2.24'],
-    answer: 'The B2.24 Computer Laboratory is located at **Building 2, Second Floor**.',
+    answer: 'The B2.24 Computer Laboratory is located at **Building 2 - Second Floor**.',
     location: { name: 'B2.24', query: 'B2.24' },},
 
   { keywords: ['b2.25'],
-    answer: 'The B2.25 Computer Laboratory is located at **Building 2, Second Floor**.',
+    answer: 'The B2.25 Computer Laboratory is located at **Building 2 - Second Floor**.',
     location: { name: 'B2.25', query: 'B2.25' },},
 
   { keywords: ['b2.26'],
-    answer: 'The B2.26 Computer Laboratory is located at **Building 2, Second Floor**.',
+    answer: 'The B2.26 Computer Laboratory is located at **Building 2 - Second Floor**.',
     location: { name: 'B2.26', query: 'B2.26' },},
 
   { keywords: ['b2.31'],
-    answer: 'The B2.31 Lecture Room is located at **Building 2, Third Floor**.',
+    answer: 'The B2.31 Lecture Room is located at **Building 2 - Third Floor**.',
     location: { name: 'B2.31', query: 'B2.31' },},
 
   { keywords: ['b2.32'],
-    answer: 'The B2.32 Lecture Room is located at **Building 2, Third Floor**.',
+    answer: 'The B2.32 Lecture Room is located at **Building 2 - Third Floor**.',
     location: { name: 'B2.32', query: 'B2.32' },},
 
   { keywords: ['b2.33'],
-    answer: 'The B2.33 Lecture Room is located at **Building 2, Third Floor**.',
+    answer: 'The B2.33 Lecture Room is located at **Building 2 - Third Floor**.',
     location: { name: 'B2.33', query: 'B2.33' },},
 
   { keywords: ['b2.34'],
-    answer: 'The B2.34 Lecture Room is located at **Building 2, Third Floor**.',
+    answer: 'The B2.34 Lecture Room is located at **Building 2 - Third Floor**.',
     location: { name: 'B2.34', query: 'B2.34' },},
 
   { keywords: ['b2.35'],
-    answer: 'The B2.35 Lecture Room is located at **Building 2, Third Floor**.',
+    answer: 'The B2.35 Lecture Room is located at **Building 2 - Third Floor**.',
     location: { name: 'B2.35', query: 'B2.35' },},
 
   { keywords: ['b2.36'],
-    answer: 'The B2.36 Lecture Room is located at **Building 2, Third Floor**.',
+    answer: 'The B2.36 Lecture Room is located at **Building 2 - Third Floor**.',
     location: { name: 'B2.36', query: 'B2.36' },},
 
   { keywords: ['b2.37'],
-    answer: 'The B2.37 Lecture Room is located at **Building 2, Third Floor**.',
+    answer: 'The B2.37 Lecture Room is located at **Building 2 - Third Floor**.',
     location: { name: 'B2.37', query: 'B2.37' },},
 
   { keywords: ['b2.38'],
-    answer: 'The B2.38 Lecture Room is located at **Building 2, Third Floor**.',
+    answer: 'The B2.38 Lecture Room is located at **Building 2 - Third Floor**.',
     location: { name: 'B2.38', query: 'B2.38' },},
 
+  { keywords: ['b2.41'],
+    answer: 'The B2.41 - Lecture Room is located at **Building 2 - Fourth Floor**.',
+    location: { name: 'B2.41', query: 'B2.41' },},
+
+  { keywords: ['b2.42'],
+    answer: 'The B2.42 Lecture Room is located at **Building 2 - Fourth Floor**.',
+    location: { name: 'B2.42', query: 'B2.42' },},
+
+  { keywords: ['b2.43'],
+    answer: 'The B2.43 Lecture Room is located at **Building 2 - Fourth Floor**.',
+    location: { name: 'B2.43', query: 'B2.43' },},
+
+  { keywords: ['b2.44'],
+    answer: 'The B2.44 Lecture Room is located at **Building 2 - Fourth Floor**.',
+    location: { name: 'B2.44', query: 'B2.44' },},
+
+  { keywords: ['b2.45'],
+    answer: 'The B2.45 Lecture Room is located at **Building 2 - Fourth Floor**.',
+    location: { name: 'B2.45', query: 'B2.45' },},
+
+  { keywords: ['b2.46'],
+    answer: 'The B2.46 Lecture Room is located at **Building 2 - Fourth Floor**.',
+    location: { name: 'B2.46', query: 'B2.46' },},
+
+  { keywords: ['b2.47'],
+    answer: 'The B2.47 Lecture Room is located at **Building 2 - Fourth Floor**.',
+    location: { name: 'B2.47', query: 'B2.47' },},
+
+  { keywords: ['b2.48'],
+    answer: 'The B2.48 Lecture Room is located at **Building 2 - Fourth Floor**.',
+    location: { name: 'B2.48', query: 'B2.48' },},
+
   { keywords: ['b4.21', 'cisco', 'networking'],
-    answer: 'The Cisco Networking Simulation Laboratory or B4.21 is located at **Building 4 — Second Floor**. It is used for Networking and Cisco certification training.',
+    answer: 'The Cisco Networking Simulation Laboratory or B4.21 is located at **Building 4 — Second Floor**. This laboratory is for Networking and Cisco certification training.',
     location: { name: 'B4.21', query: 'B4.21' },},
 
   { keywords: ['b4.22', 'speech', 'foreign language'],
@@ -184,13 +224,13 @@ const KB = [
   { keywords: ['b4.23', 'drm', 'digital', 'robotics'],
     answer: `The Digital & Robotics Modelling Laboratory or B4.23 is located at **Building 4 — Second Floor**.
     
-    It is used for robotics and digital design coursework. This room is also used for class lectures.`,
+    This laboratory is for robotics and digital design coursework. This room is also used for class lectures.`,
     location: { name: 'B4.23', query: 'B4.23' },},
 
   { keywords: ['b4.24', 'e-learning', 'hub'],
     answer: `The E-Learning Hub or B4.24 is located at **Building 4 — Second Floor**.
     
-    E-Learning Hub is used for class lectures and instructor's digital/online learning.`,
+    E-Learning Hub is for class lectures and instructor's digital/online learning.`,
     location: { name: 'B4.24', query: 'B4.24' },},
 
   { keywords: ['b4.25', 'senior high', 'department', 'shs', 'shs faculty'],
@@ -239,13 +279,37 @@ const KB = [
     answer: `The Supply Section is located at **Building 2, Ground Floor** beside Library. You can claim here your uniform, booklet, id lace, and etc.`,
     location: { name: 'Supply Section', query: 'Supply Section'},},
 
+  { keywords: ['chemistry', 'chem', 'dark', 'experiment', 'b4.11'],
+    answer: `Chemistry Laboratory / Dark Room or B4.11 is located at **Building 4 — Ground floor**. This laboratory is for chemistry experiments and photography development.`,
+    location: { name: 'B4.11', query: 'B4.11' },},
+
+  { keywords: ['chemistry', 'chem', 'dark', 'experiment', 'b4.11'],
+    answer: `Chemistry Laboratory / Dark Room or B4.11 is located at **Building 4 — Ground floor**. This laboratory is for chemistry experiments and photography development.`,
+    location: { name: 'B4.11', query: 'B4.11' },},
+
   { keywords: ['b4.13', 'engineering lab'],
-    answer: `The Engineering Laboratory is located at **Building 4, Ground Floor**. A hands-on space for engineering coursework and projects.`,
+    answer: `The Engineering Laboratory is located at **Building 4 - Ground Floor**. A hands-on space for engineering coursework and projects.`,
     location: { name: 'B4.13', query: 'B4.13'},},
   
   { keywords: ['b4.14', 'forensic lab'],
-    answer: `The Forensic Laboratory is located at **Building 4, Ground Floor**. It is used for forensic science training and analysis.`,
+    answer: `The Forensic Laboratory is located at **Building 4 - Ground Floor**. This laboratory is for forensic science training and analysis.`,
     location: { name: 'B4.14', query: 'B4.14'},},
+
+  { keywords: ['culinary', 'demo', 'cooking', 'b4.15'],
+    answer: `Culinary Demo Room  or B4.15 is located at **Building 4 — Ground floor**. This room is for culinary instruction and cooking demonstrations.`,
+    location: { name: 'B4.15', query: 'B4.15' },},
+
+  { keywords: ['function', 'b4.16'],
+    answer: `Function Room or B4.16 is located at **Building 4 — Ground floor**. This is a multi-purpose room for events and gatherings.`,
+    location: { name: 'B4.16', query: 'B4.16' },},
+
+  { keywords: ['cold', 'pastry', 'pastries', 'salad', 'b4.17'],
+    answer: `Cold Kitchen or B4.17 is located at **Building 4 — Ground floor**. This kitchen is for food prep that doesn't require cooking, like salads and pastries.`,
+    location: { name: 'B4.17', query: 'B4.17' },},
+
+  { keywords: ['hot', 'cook', 'cooking', 'b4.18'],
+    answer: `Hot Kitchen or B4.18 is located at **Building 4 — Ground floor**. This room is for cooking-based culinary training.`,
+    location: { name: 'B4.18', query: 'B4.18' },},
   
   { keywords: ['coordinators'],
     answer: `The Office of the College Deans and Academic Coordinators is located at **Building 1 — Second Floor** beside Faculty Room & Lounge.`,
@@ -291,6 +355,13 @@ const KB = [
     answer: 'First year? **FIRST YEAR KA NO?** Punta ka lang sa ituturo ng map, ingat ka ha HAHAHAHAHAHA!',
     location: { name: 'Exit', query: 'Exit' },},
 
+  { keywords: ['chemistry', 'chem', 'dark', 'b4.11'],
+    answer: `Chemistry Laboratory / Dark Room or B4.11 is located at **Building 1 — Ground floor**. This laboratory is for chemistry experiments and photography development.`,
+    location: { name: 'B4.11', query: 'B4.11' },},
+
+  { keywords: ['physics', 'b4.11'],
+    answer: `Physics Laboratory or B4.12 is located at **Building 1 — Ground floor**. This laboratory is for physics experiments and demonstrations.`,
+    location: { name: 'B4.12', query: 'B4.12' },},
 ]
 
 const QUICK_REPLIES = [
@@ -302,7 +373,7 @@ const QUICK_REPLIES = [
   { label: '🎓 Guidance Office',   msg: 'Where is the Guidance Office?' },
   { label: '🆔 Student ID',        msg: 'Where do I get my student ID?' },
   { label: '🏫 Admission',         msg: 'Where is the Admission Office?' },
-  { label: '💌 TBA',               msg: 'Where is the Room TBA?' },
+  { label: '💌 TBA',               msg: 'Where is Room TBA?' },
 ]
 
 const KEYBOARD_ROWS = [
@@ -314,7 +385,9 @@ const KEYBOARD_ROWS = [
 
 const STRANDS_COLORS = ["#6f570d","#091dae","#5a0822"]
 
-const INITIAL_MSG = [{ from: 'bot', text: "Hi there ICCTnians! Welcome to ICCT colleges. I am your virtual assistant. I can help you locate the Room, Offices, Gymnasium, Faculties and provide basic facility information. How can i assist you today? Please tell me your destination, and i will provide directions to navigate for you.", time: new Date().toISOString() }]
+const INITIAL_MSG = [{ from: 'bot', text: `Hi there ICCTnians! Welcome to ICCT Colleges' Smart Campus Navigation and Concierge Kiosk.
+
+  I am BotBot, your virtual navigation assistant. How can I assist you today? Tell me your desired destination, and I will provide directions to navigate for you.`, time: new Date().toISOString() }]
 const FAB_SIZE = 96
 const FAB_MARGIN = 16
 
@@ -538,7 +611,7 @@ export default function ChatBot() {
           {/* header ----------------------------- */}
           <div style={s.header}>
             <div style={s.headerRow}>
-              <p style={s.botName}>Campus Botbot</p>
+              <p style={s.botName}>CAMPUS BOTBOT</p>
             </div>
             <p style={s.botStatus}>● Online · Smart Navigator</p>
           </div>
@@ -694,8 +767,8 @@ const s = {
 
   headerRow: { display:'flex', alignItems:'center', gap:'8px' },
   sparkle: { fontSize:'18px' },
-  botName:   { fontSize:'16px', fontWeight:'700', color:'white', margin:0 },
-  botStatus: { fontSize:'12px', color:'#1d9e75', margin:0 },
+  botName:   { fontSize:'20px', fontWeight:'700', color:'white', margin:0 },
+  botStatus: { fontSize:'14px', color:'#1d9e75', margin:0 },
 
   messages: {
     flex:1, overflowY:'auto',
@@ -709,12 +782,12 @@ const s = {
   bubbleBot:  { background:'#162d55', border:'1px solid #1e3a5f', borderBottomLeftRadius:'4px' },
   bubbleUser: { background:'linear-gradient(135deg, #378add, #1d6fb5)', borderBottomRightRadius:'4px' },
   bubbleText: { fontSize:'15px', color:'white', margin:0, lineHeight:1.6, whiteSpace: 'pre-line'},
-  bubbleTime: { fontSize:'11px', color:'#4a7fb5', margin:'5px 0 0', textAlign:'right' },
+  bubbleTime: { fontSize:'13px', color:'#4a7fb5', margin:'5px 0 0', textAlign:'right' },
   windowHint: {
-    fontSize:'12px', color:'#f59e0b',
+    fontSize:'12px', color:'#dbd668',
     margin:'8px 0 0', padding:'5px 10px',
-    background:'#1a1200', borderRadius:'6px',
-    border:'1px solid #3a2800',
+    background:'#412525', borderRadius:'6px',
+    border:'1px solid #221b27',
   },
 
   mapBtn: {

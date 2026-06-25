@@ -7,13 +7,13 @@ import { useTheme } from '../../theme'
 
 const POPULAR = ["Registrar's Office", 'Library', 'Admission Office', 'Guidance Office', 'Accounting Office', 'Student Affairs Office', 'The Theatre Room', 'TBA']
 const ALL_LOCATIONS = [
-  'Registrar - Window 1', 'Registrar - Window 2', 'Registrar - Window 3', 'Library', 'Canteen', 'Guidance Office', 'Accounting', 'Deans Office',
-  'Registrar - Window 4', 'Registrar - Window 5', 'Registrar - Window 6', 'Registrar - Window 7', 'Registrar - Window 8', 'Registrar - Window 9',
-  'Registrar - Window 12', 'Registrar - Window 14', 'Registrar - Window 15', "Registrar's Office", 'CDJP Office', 'Guidance Office', 'NSTP Office',
-  'Student Affairs Office', 'The Theatre Room', 'Computer Laboratory 1', 'Exit', 'Accounting Office', 'Accounting - Window 1', 'Accounting - Window 2',
-  'Accounting - Window 3', 'Accounting - Window 4', 'Accounting - Window 5', 'Accounting - Window 6', 'Accounting - Window 7', 'Accounting - Window 8',
-  'Accounting - Window 9', 'HRM Tools & Equipment', 'B2.11', 'B2.12', 'Supply Section', 'Admission Office', 'Clinic', 'Testing Room', 'Drug Testing Center',
-  'Social Lounge', 'B4.13', 'B4.14', 'Office of the College Deans and Academic Coordinators', 'Faculty Room & Lounge', 'Academic Affairs Office', 'Online Teaching Hub',
+  'Window 1 - Registrar', 'Window 2 - Registrar', 'Window 3 - Registrar', 'Library', 'Canteen', 'Guidance Office', 'Accounting', 'Deans Office',
+  'Window 4 - Registrar', 'Window 5 - Registrar', 'Window 6 - Registrar', 'Window 7 - Registrar', 'Window 8 - Registrar', 'Window 9 - Registrar',
+  'Window 12 - Registrar', 'Window 14 - Registrar', 'Window 15 - Registrar', "Registrar's Office", 'CDJP Office', 'Guidance Office', 'NSTP Office',
+  'Student Affairs Office', 'The Theatre Room', 'Computer Laboratory 1', 'Exit', 'Accounting Office', 'Window 1 - Accounting', 'Window 2 - Accounting',
+  'Window 3 - Accounting', 'Window 4 - Accounting', 'Window 5 - Accounting', 'Window 6 - Accounting', 'Window 7 - Accounting', 'Window 8 - Accounting',
+  'Window 9 - Accounting', 'HRM Tools & Equipment', 'B2.11', 'B2.12', 'Supply Section', 'Admission Office', 'Clinic', 'Testing Room', 'Drug Testing Center',
+  'Social Lounge', 'B4.11','B4.12', 'B4.13', 'B4.14','B4.15','B4.16', 'B4.17', 'B4.18', 'Office of the College Deans and Academic Coordinators', 'Faculty Room & Lounge', 'Academic Affairs Office',
   'B1.21', 'Multi-Purpose Academic Hall', 'Office of the College Deans', 'B2.21', 'B2.22', 'B2.23', 'B2.24', 'B2.25', 'B2.26', 'MIS Faculty', 'MIS Department',
   'Broadcasting Room', 'Media Arts Center', 'Office of the Chairman', 'Boardroom', 'B4.21', 'B4.22', 'B4.23', 'B4.24', 'B4.25', "Men's CR (2F)", "Ladies' CR (B2-2F)",
   "Ladies' CR (B4-2F)", 'Volleyball / Badminton Court', 'Administration & Human Resources Office (AHRO)', 'Special Projects Affiliations & Marketing Office (SPAMO)',
@@ -22,7 +22,7 @@ const ALL_LOCATIONS = [
   'B2.41', 'B2.42', 'B2.43', 'B2.44', 'B2.45', 'B2.46', 'B2.47', 'B2.48', 'B4.41', 'B4.42', 'B4.43', 'B4.44', 'B4.45', 'B4.46', 'B4.47', 'B4.48', "Ladies' CR (B4-4F)",
   "Men's CR (4F)", 'B2.51', 'B2.52', 'B2.53', 'B2.54', 'B2.55', 'B2.56', 'B2.57', 'B2.58', 'B4.51', 'B4.52', 'B4.53', 'B4.54', 'B4.55', 'B4.56', 'B4.57', 'B4.58',
   "Ladies' CR (B2-5F)", "Ladies' CR (B4-5F)", "Men's CR (5F)", 'Female Dressing Room', 'Male Dressing Room', 'P.E. Faculty Room', 'P.E. Gymnasium', 'ISHTM Hotel Simulation Laboratory',
-  'The Theatre Room - Balcony', 'Food Court'
+  'The Theatre Room - Balcony', 'Food Court', 'Online Teaching Hub',
 ]
 const KEYBOARD_ROWS = [
   ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'],
@@ -152,21 +152,28 @@ function MiniBuildingMap({ buildingName, floor, color, theme }) {
   const region = BUILDING_VIEWBOX[buildingName]
   if (!region) return null
 
-  const W = 260, H = 200, PAD = 8
+  const W = 320, H = 260, PAD = 8
   const sx = x => PAD + ((x - region.x) / region.w) * (W - PAD * 2)
   const sy = y => PAD + ((y - region.y) / region.h) * (H - PAD * 2)
 
+  // Clip boundary in SVG pixels
+  const clipX = sx(region.x)
+  const clipY = sy(region.y)
+  const clipW = sx(region.x + region.w) - clipX
+  const clipH = sy(region.y + region.h) - clipY
+  const clipId = `clip-mini-${buildingName.replace(' ', '')}-${floor}`
+
   const buildingBlocks = blocks.filter(b => {
     if (b.label === buildingName) return true
-    if (b.type === 'building' || b.type === 'hallway') return false
-    const bRight = b.x + b.w, bBottom = b.y + b.h
-    const rRight = region.x + region.w, rBottom = region.y + region.h
+    if (b.type === 'building') return false
+    const bRight  = b.x + b.w
+    const bBottom = b.y + b.h
+    const rRight  = region.x + region.w
+    const rBottom = region.y + region.h
     return b.x < rRight && bRight > region.x && b.y < rBottom && bBottom > region.y
   })
 
   const isDark = theme.mode === 'dark'
-  // Room fills come from the shared theme module (theme.roomFillByType) so
-  // this mini-map and the full CampusMap on MapPage always agree on colors.
   const typeFill = theme.roomFillByType || {}
   const labelColor = isDark ? '#3a7a8e' : '#5b7d8c'
   const gridStroke = isDark ? '#1e3a48' : '#c3d2dd'
@@ -188,30 +195,55 @@ function MiniBuildingMap({ buildingName, floor, color, theme }) {
   }
 
   return (
-    <svg width="100%" height="100%" viewBox={`0 0 ${W} ${H}`} style={{ display: 'block', background: theme.miniMapBg, borderRadius: 8 }}>
-      <rect x={PAD} y={PAD} width={W-PAD*2} height={H-PAD*2} rx="4" fill={theme.miniMapBg} stroke={color} strokeWidth="1.5"/>
-      {buildingBlocks.filter(b => b.label !== buildingName).map((b, i) => {
-        const bx=sx(b.x), by=sy(b.y), bw=sx(b.x+b.w)-sx(b.x), bh=sy(b.y+b.h)-sy(b.y)
-        if (bw < 2 || bh < 2) return null
-        const fill = typeFill[b.type] || (isDark ? '#0d2030' : '#e3ecf3')
-        const stroke = b.type==='stairs' ? color+'88' : b.type==='elevator' ? color : gridStroke
-        const cx=bx+bw/2, cy=by+bh/2
-        const {lines, fontSize, lineH} = roomLabel(b.label, bw, bh)
-        const totalH=lines.length*lineH, startY=cy-totalH/2+lineH/2
-        return (
-          <g key={i}>
-            <rect x={bx} y={by} width={bw} height={bh} rx="2" fill={fill} stroke={stroke} strokeWidth="0.8" opacity="0.95"/>
-            {bw>14 && bh>8 && lines.map((line,li) => (
-              <text key={li} x={cx} y={startY+li*lineH} textAnchor="middle" dominantBaseline="middle"
-                style={{fontSize, fill:labelColor, fontFamily:'monospace', pointerEvents:'none', userSelect:'none'}}>{line}</text>
-            ))}
-          </g>
-        )
-      })}
+    <svg width="100%" height="100%" viewBox={`0 0 ${W} ${H}`}
+      style={{ display: 'block', background: theme.miniMapBg, borderRadius: 8, height: '100%' }}>
+
+      {/* ── Clip path — prevents rooms from bleeding outside building border ── */}
+      <defs>
+        <clipPath id={clipId}>
+          <rect x={clipX} y={clipY} width={clipW} height={clipH} rx="4"/>
+        </clipPath>
+      </defs>
+
+      {/* Building border */}
+      <rect x={clipX} y={clipY} width={clipW} height={clipH}
+        rx="4" fill={theme.miniMapBg} stroke={color} strokeWidth="1.5"/>
+
+      {/* Room blocks — clipped inside building boundary */}
+      <g clipPath={`url(#${clipId})`}>
+        {buildingBlocks.filter(b => b.label !== buildingName).map((b, i) => {
+          const bx=sx(b.x), by=sy(b.y), bw=sx(b.x+b.w)-sx(b.x), bh=sy(b.y+b.h)-sy(b.y)
+          if (bw < 2 || bh < 2) return null
+          const fill = typeFill[b.type] || (isDark ? '#0d2030' : '#e3ecf3')
+          const stroke = b.type==='stairs' ? color+'88' : b.type==='elevator' ? color : gridStroke
+          const cx=bx+bw/2, cy=by+bh/2
+          const {lines, fontSize, lineH} = roomLabel(b.label, bw, bh)
+          const totalH=lines.length*lineH, startY=cy-totalH/2+lineH/2
+          return (
+            <g key={i}>
+              <rect x={bx} y={by} width={bw} height={bh} rx="2"
+                fill={fill} stroke={stroke} strokeWidth="0.8" opacity="0.95"/>
+              {bw>14 && bh>8 && lines.map((line,li) => (
+                <text key={li} x={cx} y={startY+li*lineH}
+                  textAnchor="middle" dominantBaseline="middle"
+                  style={{fontSize, fill:labelColor, fontFamily:'monospace',
+                    pointerEvents:'none', userSelect:'none'}}>
+                  {line}
+                </text>
+              ))}
+            </g>
+          )
+        })}
+      </g>
+
+      {/* Building watermark label */}
       <text x={W/2} y={H/2} textAnchor="middle" dominantBaseline="middle"
-        style={{fontSize:48, fill:color, fontFamily:'monospace', fontWeight:700, opacity:0.06, pointerEvents:'none', userSelect:'none'}}>
+        style={{fontSize:48, fill:color, fontFamily:'monospace', fontWeight:700,
+          opacity:0.06, pointerEvents:'none', userSelect:'none'}}>
         {buildingName.replace('Building ','B')}
       </text>
+
+      {/* Floor label */}
       <text x={W-PAD-2} y={H-PAD-2} textAnchor="end" dominantBaseline="auto"
         style={{fontSize:8, fill:color, fontFamily:'monospace', fontWeight:700, opacity:0.7}}>
         {FLOOR_LABELS[floor] || `Floor ${floor}`}
@@ -223,30 +255,50 @@ function MiniBuildingMap({ buildingName, floor, color, theme }) {
 // ---- Flip Card — glassmorphism ----
 function BuildingCard({ building, theme }) {
   const [flipped, setFlipped] = useState(false)
+  const [pressed, setPressed] = useState(false)
   const [activeFloor, setActiveFloor] = useState(1)
   const CardIcon = building.Icon
   const isDark = theme.mode === 'dark'
 
   return (
     <div
-      style={{ width: '100%', height: '100%', perspective: '1000px', cursor: 'pointer' }}
+      style={{ width: '100%', height: '100%', perspective: '1000px', cursor: 'pointer', WebkitTapHighlightColor: 'transparent' }}
       onClick={() => setFlipped(f => !f)}
+      onMouseDown={() => setPressed(true)}
+      onMouseUp={() => setPressed(false)}
+      onMouseLeave={() => setPressed(false)}
+      onTouchStart={() => setPressed(true)}
+      onTouchEnd={() => setPressed(false)}
     >
       <style>{`
+      * {
+          -webkit-tap-highlight-color: transparent;
+        }
+
+        div:focus,
+        button:focus {
+          outline: none !important;
+        }   
+          
         .card-inner {
           position: relative; width: 100%; height: 100%;
           transform-style: preserve-3d;
           transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
         }
+
         .card-inner.flipped { transform: rotateY(180deg); }
+        
         .card-face {
           position: absolute; inset: 0;
           -webkit-backface-visibility: hidden;
           backface-visibility: hidden;
           border-radius: 20px;
           overflow: hidden;
+          transition: box-shadow 0.2s;
         }
+
         .card-back { transform: rotateY(180deg); }
+        
       `}</style>
 
       <div className={`card-inner${flipped ? ' flipped' : ''}`}>
@@ -255,11 +307,15 @@ function BuildingCard({ building, theme }) {
         <div className="card-face" style={{
           background: isDark
             ? `linear-gradient(135deg, ${building.color}14 0%, rgba(7,24,46,0.65) 60%)`
-            : `linear-gradient(135deg, ${building.color}10 0%, rgba(255,255,255,0.7) 60%)`,
+            : `linear-gradient(135deg, ${building.color}0a 0%, rgba(255,255,255,0.45) 60%)`,
           backdropFilter: 'blur(20px) saturate(160%)',
           WebkitBackdropFilter: 'blur(20px) saturate(160%)',
           border: `1px solid ${theme.glassBorder}`,
-          boxShadow: `0 8px 28px ${building.glow}, inset 0 1px 0 rgba(255,255,255,0.06)`,
+          boxShadow: pressed
+            ? `0 4px 12px rgba(14,65,123,0.15), inset 0 1px 0 rgba(255,255,255,0.6)`
+            : isDark
+              ? `0 8px 28px ${building.glow}, inset 0 1px 0 rgba(255,255,255,0.06)`
+              : `0 4px 16px rgba(15,28,44,0.15), inset 0 1px 0 rgba(255,255,255,0.7)`,
           display: 'flex', flexDirection: 'column',
           alignItems: 'center', justifyContent: 'center',
         }}>
@@ -270,8 +326,8 @@ function BuildingCard({ building, theme }) {
             <CardIcon size={42}/>
           </div>
           <div style={{ fontSize: '40px', fontWeight: '700', letterSpacing: '1px', fontFamily: "'Inter',sans-serif", color: building.color, lineHeight: 1, marginBottom: '8px', position: 'relative', textShadow: isDark ? `0 0 16px ${building.color}66` : 'none' }}>{building.short}</div>
-          <div style={{ fontSize: '14px', color: theme.textMuted, fontWeight: '500', marginBottom: '20px', position: 'relative' }}>{building.id}</div>
-          <div style={{ fontSize: '11px', letterSpacing: '2px', textTransform: 'uppercase', fontFamily: "'Inter',sans-serif", fontWeight: '600', color: building.color + 'cc', position: 'relative' }}>Tap to see map</div>
+          <div style={{ fontSize: '18px', color: theme.textMuted, fontWeight: '500', marginBottom: '20px', position: 'relative' }}>{building.id}</div>
+          <div style={{ fontSize: '15px', letterSpacing: '2px', textTransform: 'uppercase', fontFamily: "'Inter',sans-serif", fontWeight: '700', color: building.color + 'cc', position: 'relative' }}>Tap to see map</div>
         </div>
 
         {/* ── Back — glass ── */}
@@ -289,8 +345,8 @@ function BuildingCard({ building, theme }) {
             display: 'flex', alignItems: 'center', justifyContent: 'space-between',
             padding: '12px 14px 10px', borderBottom: `1px solid ${theme.glassBorder}`, flexShrink: 0,
           }}>
-            <span style={{ fontSize: '14px', fontWeight: '700', letterSpacing: '0.5px', fontFamily: "'Inter',sans-serif", color: building.color }}>{building.id}</span>
-            <div style={{ display: 'flex', gap: '4px', flexWrap: 'nowrap', justifyContent: 'flex-end', maxWidth: '160px' }}>
+            <span style={{ fontSize: '15.5px', fontWeight: '700', letterSpacing: '0.5px', fontFamily: "'Inter',sans-serif", color: building.color }}>{building.id}</span>
+            <div style={{ display: 'flex', gap: '3px', flexWrap: 'nowrap', justifyContent: 'flex-end', maxWidth: '160px' }}>
               {building.floors.map(f => (
                 <button key={f}
                   onClick={e => { e.stopPropagation(); setActiveFloor(f) }}
@@ -300,8 +356,8 @@ function BuildingCard({ building, theme }) {
                     border: `1px solid ${activeFloor === f ? building.color : theme.glassBorder}`,
                     borderRadius: '8px',
                     color: activeFloor === f ? '#04141f' : theme.textMuted,
-                    fontSize: '10px', fontWeight: '700',
-                    padding: '4px 8px', cursor: 'pointer',
+                    fontSize: '14px', fontWeight: '600',
+                    padding: '4px 7px', cursor: 'pointer',
                     fontFamily: "'Inter',sans-serif", transition: 'all 0.15s',
                   }}
                 >
@@ -311,16 +367,16 @@ function BuildingCard({ building, theme }) {
             </div>
           </div>
 
-          <div style={{ flex: 1, padding: '8px', minHeight: 0, overflow: 'hidden' }}>
+          <div style={{ flex: 1, padding: '2px', minHeight: 0, overflow: 'hidden' }}>
             <MiniBuildingMap buildingName={building.id} floor={activeFloor} color={building.color} theme={theme}/>
           </div>
 
           <div style={{
             textAlign: 'center', padding: '6px 0 10px',
-            fontSize: '10px', letterSpacing: '1.5px', textTransform: 'uppercase',
+            fontSize: '13px', letterSpacing: '1.5px', textTransform: 'uppercase',
             fontFamily: "'Inter',sans-serif", fontWeight: '600', color: building.color + '99', flexShrink: 0,
           }}>
-            Tap to flip back
+            TAP TO FLIP BACK
           </div>
         </div>
 
@@ -363,12 +419,26 @@ export default function Home() {
   const longPressTimer = useRef(null)
 
   useEffect(() => {
+
+    if (!document.getElementById('outfit-font')) {
+      const link = document.createElement('link')
+      link.id = 'outfit-font'
+      link.rel = 'stylesheet'
+      link.href = 'https://fonts.googleapis.com/css2?family=Outfit:wght@600;700;800&display=swap'
+      document.head.appendChild(link)
+    }
     if (!document.getElementById('inter-font')) {
       const link = document.createElement('link')
       link.id = 'inter-font'
       link.rel = 'stylesheet'
       link.href = 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap'
       document.head.appendChild(link)
+    }
+    if (!document.getElementById('roman-sd-font')) {
+      const style = document.createElement('style')
+      style.id = 'roman-sd-font'
+      style.textContent = `@import url('https://fonts.cdnfonts.com/css/roman-sd');`
+      document.head.appendChild(style)
     }
   }, [])
 
@@ -681,7 +751,7 @@ const getStyles = (theme) => ({
 
   cardsSection: { flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: 0, paddingTop: '0.25rem' },
   cardsLabel: { fontSize: '13px', letterSpacing: '2px', color: theme.textMuted, textTransform: 'uppercase', fontFamily: "'Inter',sans-serif", fontWeight: '700', marginBottom: '20px', textAlign: 'center', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' },
-  cardsGrid: { display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '18px', width: '100%', flex: 1, minHeight: 0, maxHeight: '480px' },
+  cardsGrid: { display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '18px', width: '100%', flex: 1, minHeight: 0, maxHeight: '500px' },
 
   keyboard: {
     width: '100%',

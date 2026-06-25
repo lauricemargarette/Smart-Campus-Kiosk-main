@@ -1,4 +1,4 @@
-import { useMemo, useEffect, useState } from 'react'
+import { useMemo, useEffect, useState, useRef } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import {
   LOCATIONS, EDGES, FLOOR_BLOCKS, FLOOR_LABELS,
@@ -307,12 +307,7 @@ export default function MobilePage() {
   const [mapExpanded, setMapExpanded] = useState(false)
   const [zoomScale, setZoomScale] = useState(1)
   const [zoomOrigin, setZoomOrigin] = useState({ x: 0, y: 0 })
-  const pinchRef = useState(() => ({ startDist: 0, startScale: 1 }))[0]
-
-  // Reset zoom whenever the modal opens or closes
-  useEffect(() => {
-    if (mapExpanded) { setZoomScale(1); setZoomOrigin({ x: 0, y: 0 }) }
-  }, [mapExpanded])
+  const pinchRef = useRef({ startDist: 0, startScale: 1 })
 
   const getDist = (touches) => {
     const dx = touches[0].clientX - touches[1].clientX
@@ -322,8 +317,8 @@ export default function MobilePage() {
 
   const handleTouchStart = (e) => {
     if (e.touches.length === 2) {
-      pinchRef.startDist = getDist(e.touches)
-      pinchRef.startScale = zoomScale
+      pinchRef.current.startDist = getDist(e.touches)
+      pinchRef.current.startScale = zoomScale
 
       // Find the midpoint between the two fingers, relative to the map container,
       // so zoom anchors to where the user is actually pinching (e.g. Building 3)
@@ -340,9 +335,9 @@ export default function MobilePage() {
     if (e.touches.length === 2) {
       e.preventDefault()
       const newDist = getDist(e.touches)
-      if (pinchRef.startDist > 0) {
-        const ratio = newDist / pinchRef.startDist
-        const next = Math.min(Math.max(pinchRef.startScale * ratio, 1), 4)
+      if (pinchRef.current.startDist > 0) {
+        const ratio = newDist / pinchRef.current.startDist
+        const next = Math.min(Math.max(pinchRef.current.startScale * ratio, 1), 4)
         setZoomScale(next)
       }
     }
@@ -350,7 +345,7 @@ export default function MobilePage() {
 
   const handleTouchEnd = (e) => {
     if (e.touches.length < 2) {
-      pinchRef.startDist = 0
+      pinchRef.current.startDist = 0
     }
   }
 
@@ -427,7 +422,7 @@ export default function MobilePage() {
             <p style={{ ...s.cardLabel, margin: 0 }}><Icon.Map size={13}/> LOCATION MAP</p>
             <span style={s.expandHint}><Icon.Expand size={12}/> Tap to zoom</span>
           </div>
-          <div style={s.mapWrap} onClick={() => setMapExpanded(true)}>
+          <div style={s.mapWrap} onClick={() => { setMapExpanded(true); setZoomScale(1); setZoomOrigin({ x: 0, y: 0 }) }}>
             <MiniMap floor={floor} destId={dest?.id || parseInt(destId)}/>
           </div>
           <p style={s.mapNote}>

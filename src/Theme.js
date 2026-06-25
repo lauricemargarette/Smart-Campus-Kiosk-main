@@ -2,9 +2,6 @@ import { useState, useEffect, useCallback } from 'react'
 // Single source of truth for the kiosk's light/dark theme.
 
 export const THEME_STORAGE_KEY = 'kiosk-theme'
-// MapPage and Home both listen for this so flipping the toggle
-// on one screen updates the other instantly if they're ever
-// mounted together (e.g. an iframe, a second kiosk view).
 const THEME_CHANGE_EVENT = 'kiosk-theme-change'
 
 export const THEMES = {
@@ -130,7 +127,7 @@ export const THEMES = {
     mapPillBg: '#eef2f8',
     mapPillBgDest: '#2E56B8',
     mapNodeFill: '#cdd6e2',
-    mapNodeText: '#101c2c',
+    mapNodeText: '#335f99',
     // light theme — roomFillByType
     roomFillByType: {
       office:      '#ffffff',
